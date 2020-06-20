@@ -12,6 +12,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
 import Stats from "stats-js";
+import { MOONLIGHT, SLATE, SUNLIGHT } from "./constants/colors";
 
 const onWindowResize = (e) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -24,6 +25,10 @@ const onClick = (e) => {
   var intersects = raycaster.intersectObjects(scene.children, true);
   if (intersects.length > 0) {
     const intersectObj = intersects[0].object;
+    console.log(intersectObj);
+    if (intersectObj.type !== "Mesh") {
+      return;
+    }
     outlinePass.selectedObjects = [intersectObj];
     if (intersectObj._outline) {
       scene.remove(intersectObj._outline);
@@ -100,6 +105,7 @@ export function loadSVG(url, key, opts) {
           let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
           let mesh = new THREE.Mesh(geometry, material);
           mesh.name = opts.name || `obj-${uniqueId()}`;
+          mesh.receiveShadow = true;
 
           if (scale) {
             mesh.scale.set(scale, scale, scale);
@@ -126,7 +132,8 @@ let startAt;
 let stats;
 let raycaster;
 let animating = false;
-var mouse = new THREE.Vector2();
+let mouse = new THREE.Vector2();
+let gridHelper;
 let pausedMs = 0;
 let elapsedMs = 0;
 
@@ -154,6 +161,8 @@ export function initScene() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.sortObjects = true;
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
   container.appendChild(renderer.domElement);
 
   var controls = new OrbitControls(camera, renderer.domElement);
@@ -161,23 +170,37 @@ export function initScene() {
 
   scene = new THREE.Scene();
   scene.autoUpdate = true;
-  // scene.background = new THREE.Color(0x111111);
 
-  let helper = new THREE.GridHelper(1000, 10);
+  gridHelper = new THREE.GridHelper(1000, 10);
   camera.lookAt(scene.position);
-  helper.rotation.x = Math.PI / 2;
-  scene.add(helper);
+  gridHelper.rotation.x = Math.PI / 2;
+  scene.add(gridHelper);
 
-  scene.add(new THREE.AmbientLight(0x444444));
+  scene.add(new THREE.AmbientLight(MOONLIGHT, 0.1));
   scene.fog = new THREE.FogExp2(0xefd1b5, 0.0001);
 
-  var light1 = new THREE.DirectionalLight(0xffffff, 0.5);
-  light1.position.set(1, 1, 500);
+  const light1 = new THREE.DirectionalLight(SUNLIGHT, 5);
+  light1.position.set(0, 1, 500);
+  light1.castShadow = true;
   scene.add(light1);
+  scene.add(light1.target);
 
-  var light2 = new THREE.DirectionalLight(0xffffff, 1.5);
-  light2.position.set(0, -1, 300);
-  scene.add(light2);
+  var sphereGeometry = new THREE.SphereBufferGeometry(50, 32, 32);
+  var sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+  var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  sphere.position.set(0, 0, 100);
+  sphere.castShadow = true; //default is false
+  sphere.receiveShadow = false; //default
+  scene.add(sphere);
+
+  var planeGeometry = new THREE.PlaneBufferGeometry(800, 800, 32, 32);
+  var planeMaterial = new THREE.MeshStandardMaterial({ color: SLATE });
+  var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  plane.receiveShadow = true;
+  scene.add(plane);
+
+  var helper = new THREE.CameraHelper(light1.shadow.camera);
+  scene.add(helper);
 
   window.addEventListener("resize", onWindowResize, false);
   document.addEventListener("mousemove", onMouseMove, false);
