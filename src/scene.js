@@ -82,6 +82,7 @@ export function initScene() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.sortObjects = true;
   container.appendChild(renderer.domElement);
 
   var controls = new OrbitControls(camera, renderer.domElement);

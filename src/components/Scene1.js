@@ -13,6 +13,7 @@ export default () => {
             url="/svg/feather.svg"
             rotation={rot}
             textureUrl={"/img/mosaic.jpg"}
+            position={[0, 0, 100]}
           />
         );
       }
@@ -20,9 +21,10 @@ export default () => {
         <Shape
           key={i}
           fillColor="#2a9d8f"
-          url="/svg/feather.svg"
+          url="/svg/leaf-simple.svg"
           rotation={rot}
           opacity={0.8}
+          position={[0, 0, 1]}
         />
       );
     });
@@ -30,14 +32,14 @@ export default () => {
 
   return (
     <>
-      {/*}
       <Shape
         url="/svg/hexagon.svg"
-        textureUrl={"/img/dark-stone.jpg"}
-        position={[-950, -950, -50]}
-        scale={10}
+        fillColor="#264653"
+        position={[0, 0, -100]}
+        scale={20}
+        opacity={0.25}
       />
-      */}
+
       {renderCircle()}
     </>
   );
