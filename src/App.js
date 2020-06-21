@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      console.log(e);
+      // console.log(e);
       if (e.keyCode === 32) {
         setAnimating(!animating);
       } else if (e.key === "ArrowLeft") {

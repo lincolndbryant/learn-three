@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { MathUtils } from "three";
 import { range } from "../utils";
+import Shape from "./Shape";
 
 const Star = ({ numPoints, zPosition, radius, PointComponent, ...rest }) => {
   const stepSize = 360 / numPoints;
@@ -35,6 +36,7 @@ Star.defaultProps = {
   rotations: 1,
   radius: 0,
   zPosition: 0,
+  PointComponent: Shape,
 };
 
 export default Star;

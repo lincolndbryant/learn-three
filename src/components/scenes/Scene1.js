@@ -17,7 +17,6 @@ export default () => {
       />
 
       <Star
-        PointComponent={Shape}
         url="/svg/drop.svg"
         fillColor={NEW_ENGLAND}
         numPoints={16}
@@ -25,22 +24,21 @@ export default () => {
       />
 
       <Star
-        PointComponent={Shape}
         fillColor={TEAL}
         url="/svg/drop-narrow.svg"
         radius={100}
         scale={0.75}
         zPosition={20}
+        opacity={0.8}
       />
 
       <Star
-        PointComponent={Shape}
         fillColor={PEA}
         numPoints={6}
         url="/svg/drop-narrow.svg"
         radius={50}
         zPosition={40}
-        opacity={0.8}
+        opacity={0.6}
         scale={0.5}
       />
     </>

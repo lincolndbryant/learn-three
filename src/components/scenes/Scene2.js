@@ -1,7 +1,7 @@
 import React from "react";
 import Shape from "../Shape";
 import Star from "../Star";
-import { NEW_ENGLAND, PEA, SLATE, TEAL } from "../../constants/colors";
+import { NEW_ENGLAND, SLATE, TEAL } from "../../constants/colors";
 
 export default () => {
   return (
@@ -17,7 +17,6 @@ export default () => {
       />
 
       <Star
-        PointComponent={Shape}
         url="/svg/feather.svg"
         fillColor={TEAL}
         numPoints={16}
@@ -25,7 +24,6 @@ export default () => {
       />
 
       <Star
-        PointComponent={Shape}
         fillColor={NEW_ENGLAND}
         url="/svg/drop-narrow.svg"
         radius={100}
@@ -34,7 +32,6 @@ export default () => {
       />
 
       <Star
-        PointComponent={Shape}
         fillColor={SLATE}
         numPoints={6}
         url="/svg/drop.svg"
