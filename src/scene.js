@@ -1,18 +1,28 @@
-import {
-  PerspectiveCamera,
-  WebGLRenderer,
-  TextureLoader,
-  MeshBasicMaterial,
-  MathUtils,
-} from "three";
+import { PerspectiveCamera, WebGLRenderer } from "three";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module";
 import Stats from "stats-js";
-import { MOONLIGHT, SLATE, SUNLIGHT } from "./constants/colors";
+import { SLATE, SUNLIGHT } from "./constants/colors";
+
+let scene;
+let renderer;
+let camera;
+let composer;
+let outlinePass;
+let startAt;
+let stats;
+let gui;
+let raycaster;
+let sunlight;
+let animating = false;
+let mouse = new THREE.Vector2();
+let gridHelper;
+let pausedMs = 0;
+let elapsedMs = 0;
 
 const onWindowResize = (e) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -21,8 +31,8 @@ const onWindowResize = (e) => {
   composer.setSize(window.innerWidth, window.innerHeight);
 };
 
-const onClick = (e) => {
-  var intersects = raycaster.intersectObjects(scene.children, true);
+const onClick = () => {
+  const intersects = raycaster.intersectObjects(scene.children, true);
   if (intersects.length > 0) {
     const intersectObj = intersects[0].object;
     console.log(intersectObj);
@@ -30,117 +40,19 @@ const onClick = (e) => {
       return;
     }
     outlinePass.selectedObjects = [intersectObj];
-    if (intersectObj._outline) {
-      scene.remove(intersectObj._outline);
-      delete intersectObj._outline;
-    } else {
-      var outlineMaterial2 = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        side: THREE.BackSide,
-        wireframe: true,
-        wireframeLinewidth: 10,
-        wireframeLinejoin: true,
-      });
-      var outlineMesh2 = intersectObj.clone(true);
-      outlineMesh2.name = `outline-${intersectObj.name}`;
-      outlineMesh2.material = outlineMaterial2;
-      scene.add(outlineMesh2);
-      intersectObj._outline = outlineMesh2;
-    }
   }
 };
-
-const loader = new SVGLoader();
-let scene;
-let renderer;
-let camera;
-let composer;
-let outlinePass;
-
-const EXTRUDE_DEFAULTS = {
-  bevelEnabled: false,
-  steps: 1,
-  depth: 5, //extrusion depth, don't define an extrudePath
-  material: 0, //material index of the front and back face
-  extrudeMaterial: 1, //material index of the side faces
-};
-
-let _id = 0;
-
-const uniqueId = () => _id++;
-
-export function loadSVG(url, key, opts) {
-  const scale = opts.scale || 1;
-  const translateX = opts.translateX || 0;
-  const translateY = opts.translateY || 0;
-  const { position } = opts;
-
-  return new Promise((resolve) => {
-    loader.load(url, function (data) {
-      let paths = data.paths;
-      let group = new THREE.Group();
-      let materialOpts = {
-        opacity: opts.opacity || 1,
-        transparent: true,
-      };
-
-      if (opts.textureUrl) {
-        const texture = new TextureLoader().load(opts.textureUrl);
-        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
-        texture.offset.set(0, 0);
-        texture.repeat.set(0.001 * scale, 0.001 * scale);
-        materialOpts.map = texture;
-      }
-      if (opts.fillColor) {
-        materialOpts.color = opts.fillColor;
-      }
-      const material = new MeshBasicMaterial(materialOpts);
-      const extrudeSettings = {
-        ...EXTRUDE_DEFAULTS,
-        depth: opts.depth || 1,
-      };
-      paths.forEach((path) => {
-        let shapes = path.toShapes(true);
-        shapes.forEach((shape) => {
-          let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-          let mesh = new THREE.Mesh(geometry, material);
-          mesh.name = opts.name || `obj-${uniqueId()}`;
-          mesh.receiveShadow = true;
-
-          if (scale) {
-            mesh.scale.set(scale, scale, scale);
-          }
-          if (opts.rotation) {
-            mesh.rotateZ(MathUtils.degToRad(opts.rotation));
-          }
-          mesh.position.set(
-            position[0] + translateX,
-            position[1] + translateY,
-            position[2]
-          );
-          group.add(mesh);
-        });
-      });
-
-      scene.add(group);
-      resolve(group);
-    });
-  });
-}
-
-let startAt;
-let stats;
-let raycaster;
-let animating = false;
-let mouse = new THREE.Vector2();
-let gridHelper;
-let pausedMs = 0;
-let elapsedMs = 0;
 
 const onMouseMove = (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 };
+
+function initGui() {
+  gui = new GUI({ width: 350, autoPlace: true });
+  const sceneFolder = gui.addFolder("Scene");
+  sceneFolder.add(sunlight, "intensity");
+}
 
 export function initScene() {
   let container = document.getElementById("container");
@@ -165,8 +77,9 @@ export function initScene() {
 
   container.appendChild(renderer.domElement);
 
-  var controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
   controls.screenSpacePanning = true;
+  controls.autoRotate = true;
 
   scene = new THREE.Scene();
   scene.autoUpdate = true;
@@ -176,37 +89,28 @@ export function initScene() {
   gridHelper.rotation.x = Math.PI / 2;
   scene.add(gridHelper);
 
-  scene.add(new THREE.AmbientLight(MOONLIGHT, 0.1));
-  scene.fog = new THREE.FogExp2(0xefd1b5, 0.0001);
+  sunlight = new THREE.DirectionalLight(SUNLIGHT, 5);
+  sunlight.position.set(0, 1, 500);
+  sunlight.castShadow = true;
+  scene.add(sunlight);
+  scene.add(sunlight.target);
 
-  const light1 = new THREE.DirectionalLight(SUNLIGHT, 5);
-  light1.position.set(0, 1, 500);
-  light1.castShadow = true;
-  scene.add(light1);
-  scene.add(light1.target);
-
-  var sphereGeometry = new THREE.SphereBufferGeometry(50, 32, 32);
-  var sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-  var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  const sphereGeometry = new THREE.SphereBufferGeometry(50, 32, 32);
+  const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
   sphere.position.set(0, 0, 100);
   sphere.castShadow = true; //default is false
   sphere.receiveShadow = false; //default
   scene.add(sphere);
 
-  var planeGeometry = new THREE.PlaneBufferGeometry(800, 800, 32, 32);
+  const planeGeometry = new THREE.PlaneBufferGeometry(800, 800, 32, 32);
   var planeMaterial = new THREE.MeshStandardMaterial({ color: SLATE });
-  var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.receiveShadow = true;
   scene.add(plane);
 
-  var helper = new THREE.CameraHelper(light1.shadow.camera);
+  const helper = new THREE.CameraHelper(sunlight.shadow.camera);
   scene.add(helper);
-
-  window.addEventListener("resize", onWindowResize, false);
-  document.addEventListener("mousemove", onMouseMove, false);
-  document.addEventListener("click", onClick, false);
-  window._scene = scene;
-
   composer = new EffectComposer(renderer);
 
   const renderPass = new RenderPass(scene, camera);
@@ -223,9 +127,18 @@ export function initScene() {
   outlinePass.visibleEdgeColor = new THREE.Color("#00ff00");
   composer.addPass(outlinePass);
 
+  initGui();
+
   stats = new Stats();
   document.body.append(stats.domElement);
   startAt = Date.now();
+
+  window.addEventListener("resize", onWindowResize, false);
+  document.addEventListener("mousemove", onMouseMove, false);
+  document.addEventListener("click", onClick, false);
+  window._scene = scene;
+
+  return scene;
 }
 
 export function renderScene(now) {

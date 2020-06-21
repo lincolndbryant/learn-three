@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas";
+import SCENES from "./components/scenes";
 
 function App() {
   const [animating, setAnimating] = useState(false);
+  const [sceneIndex, setSceenIndex] = useState(0);
 
   useEffect(() => {
     const onKeyDown = (e) => {
       console.log(e);
       if (e.keyCode === 32) {
         setAnimating(!animating);
+      } else if (e.key === "ArrowLeft") {
+        setSceenIndex((sceneIndex - 1) % SCENES.length);
+      } else if (e.key === "ArrowRight") {
+        setSceenIndex((sceneIndex + 1) % SCENES.length);
       }
     };
 
@@ -20,9 +26,13 @@ function App() {
     };
   });
 
+  console.log(sceneIndex);
   return (
     <div className="App">
-      <Canvas animating={animating} />
+      <Canvas
+        animating={animating}
+        SceneComponent={SCENES[sceneIndex] || SCENES[0]}
+      />
     </div>
   );
 }

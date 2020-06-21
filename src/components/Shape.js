@@ -1,6 +1,6 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
-import { loadSVG } from "../scene";
+import { loadSVG } from "../utils";
 
 export default class Shape extends Component {
   static propTypes = {
@@ -17,9 +17,13 @@ export default class Shape extends Component {
 
   componentDidMount() {
     const { url } = this.props;
-    loadSVG(url, this.props.id, this.props).then((g) => {
+    loadSVG(url, this.props).then((g) => {
       this.g = g;
     });
+  }
+
+  componentWillUnmount() {
+    window.scene.remove(this.g);
   }
 
   render() {
