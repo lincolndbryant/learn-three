@@ -1,6 +1,6 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
-import { loadSVG } from "../utils";
+import { loadSVG } from "../lib/utils";
 
 export default class Shape extends Component {
   static propTypes = {
@@ -8,11 +8,14 @@ export default class Shape extends Component {
     fillColor: PropTypes.string,
     position: PropTypes.array,
     rotation: PropTypes.number,
+    drawStrokes: PropTypes.bool,
   };
 
   static defaultProps = {
     position: [0, 0, 0],
     rotation: 0,
+    drawStrokes2: true,
+    extrude: false,
   };
 
   componentDidMount() {

@@ -26,7 +26,6 @@ function App() {
     };
   });
 
-  console.log(sceneIndex);
   return (
     <div className="App">
       <Canvas

@@ -6,16 +6,6 @@ import { NEW_ENGLAND, SLATE, TEAL } from "../../constants/colors";
 export default () => {
   return (
     <>
-      <Shape
-        url="/svg/hexagon.svg"
-        textureUrl={"/img/dark-stone.jpg"}
-        name="hexagon"
-        position={[0, 0, -50]}
-        scale={10}
-        zPosition={-50}
-        depth={2}
-      />
-
       <Star
         url="/svg/feather.svg"
         fillColor={TEAL}
@@ -32,13 +22,14 @@ export default () => {
       />
 
       <Star
+        url="/svg/drop-01.svg"
+        numPoints={5}
         fillColor={SLATE}
-        numPoints={6}
-        url="/svg/drop.svg"
+        strokeColor={NEW_ENGLAND}
         radius={20}
         zPosition={40}
         opacity={0.8}
-        scale={0.5}
+        // scale={0.5}
       />
     </>
   );

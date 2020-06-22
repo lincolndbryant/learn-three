@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { initScene, renderScene, setAnimating } from "../scene";
+import Shape from "./Shape";
 
 export default class Canvas extends Component {
   static propTypes = {
@@ -27,12 +28,29 @@ export default class Canvas extends Component {
     }
   }
 
-  render() {
+  renderScene() {
     const { SceneComponent } = this.props;
+    return (
+      <>
+        <Shape
+          url="/svg/hexagon.svg"
+          textureUrl={"/img/dark-stone.jpg"}
+          name="hexagon"
+          position={[0, 0, -50]}
+          scale={10}
+          zPosition={-50}
+          depth={2}
+        />
+        <SceneComponent />
+      </>
+    );
+  }
+
+  render() {
     return (
       <main>
         <div id="container" />
-        {this.state.scene && <SceneComponent />}
+        {this.state.scene && this.renderScene()}
       </main>
     );
   }

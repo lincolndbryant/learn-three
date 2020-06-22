@@ -29,6 +29,9 @@ const onWindowResize = (e) => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);
+  if (window.strokeMaterial) {
+    window.strokeMaterial.resolution.set(window.innerWidth, window.innerHeight);
+  }
 };
 
 const onClick = () => {
@@ -61,7 +64,7 @@ export function initScene() {
     50,
     window.innerWidth / window.innerHeight,
     10,
-    10000
+    100000
   );
   camera.position.set(0, 0, 1000);
 
@@ -78,8 +81,8 @@ export function initScene() {
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.screenSpacePanning = true;
-  controls.autoRotate = true;
+  // controls.screenSpacePanning = true;
+  // controls.autoRotate = true;
 
   scene = new THREE.Scene();
   scene.autoUpdate = true;
@@ -154,6 +157,7 @@ export function renderScene(now) {
   camera.rotation.z = (elapsedMs * 0.00025) % 360;
   camera.updateMatrixWorld();
   raycaster.setFromCamera(mouse, camera);
+  renderer.clearDepth();
   composer.render();
   stats.update();
   window.requestAnimationFrame(renderScene);

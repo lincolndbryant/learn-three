@@ -1,4 +1,5 @@
 import Scene1 from "./Scene1";
 import Scene2 from "./Scene2";
+import Strokes from "./Strokes";
 
-export default [Scene1, Scene2];
+export default [Strokes, Scene1, Scene2];

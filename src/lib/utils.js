@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { TextureLoader, MeshBasicMaterial, MathUtils } from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
+import { TEAL } from "../constants/colors";
+import { MeshLine, MeshLineMaterial } from "threejs-meshline";
 
 const EXTRUDE_DEFAULTS = {
   bevelEnabled: false,
@@ -49,14 +51,28 @@ export function loadSVG(url, opts) {
         materialOpts.color = opts.fillColor;
       }
       const material = new MeshBasicMaterial(materialOpts);
+      const strokeMaterial = new MeshLineMaterial({
+        lineWidth: 5,
+        color: opts.strokeColor || TEAL,
+        sizeAttenuation: 1,
+        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
+      });
+
       const extrudeSettings = {
         ...EXTRUDE_DEFAULTS,
         depth: opts.depth || 1,
       };
       paths.forEach((path) => {
+        window.path = path;
+        path.autoClose = true;
         let shapes = path.toShapes(true);
         shapes.forEach((shape) => {
-          let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+          shape.closePath();
+          let geometry = new THREE.ShapeGeometry(shape);
+          if (opts.extrude) {
+            geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+          }
+
           let mesh = new THREE.Mesh(geometry, material);
           mesh.name = opts.name || `obj-${uniqueId()}`;
           mesh.receiveShadow = true;
@@ -72,8 +88,33 @@ export function loadSVG(url, opts) {
             position[1] + translateY,
             position[2]
           );
+
+          mesh.updateMatrixWorld();
+          mesh.geometry.applyMatrix4(mesh.matrixWorld);
+          mesh.matrixWorld.identity();
+
           group.add(mesh);
+
+          if (opts.drawStrokes2) {
+            const ml = new MeshLine();
+            ml.setMatrixWorld(mesh.matrixWorld);
+            ml.setFromGeometry(mesh.geometry);
+            const meshLine = new THREE.Mesh(ml.geometry, strokeMaterial);
+            meshLine.updateMatrixWorld();
+            group.add(meshLine);
+          }
         });
+
+        if (opts.drawStrokes) {
+          const ml = new MeshLine();
+          // ml.setMatrixWorld(mesh.matrixWorld);
+          // mesh.geometry.vertices.push(mesh.geometry.vertices[0]);
+          // ml.setFromGeometry(mesh.geometry);
+          ml.setBufferArray(path.subPaths[0].createPointsGeometry());
+          const meshLine = new THREE.Mesh(ml.geometry, strokeMaterial);
+          meshLine.updateMatrixWorld();
+          group.add(meshLine);
+        }
       });
 
       scene.add(group);
