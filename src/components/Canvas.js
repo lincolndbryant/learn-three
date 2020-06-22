@@ -40,6 +40,7 @@ export default class Canvas extends Component {
           scale={10}
           zPosition={-50}
           depth={2}
+          drawStrokes={true}
         />
         <SceneComponent />
       </>

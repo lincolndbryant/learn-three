@@ -24,6 +24,8 @@ let _id = 0;
 
 const uniqueId = () => _id++;
 
+window.SVGs = {};
+
 export function loadSVG(url, opts) {
   const { scene } = window;
   const scale = opts.scale || 1;
@@ -33,6 +35,7 @@ export function loadSVG(url, opts) {
 
   return new Promise((resolve) => {
     loader.load(url, function (data) {
+      window.SVGs[url] = data;
       let paths = data.paths;
       let group = new THREE.Group();
       let materialOpts = {
@@ -52,9 +55,11 @@ export function loadSVG(url, opts) {
       }
       const material = new MeshBasicMaterial(materialOpts);
       const strokeMaterial = new MeshLineMaterial({
-        lineWidth: 5,
+        lineWidth: 50,
         color: opts.strokeColor || TEAL,
-        sizeAttenuation: 1,
+        sizeAttenuation: 0,
+        depthTest: false,
+        // depthWrite: false,
         resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
       });
 
@@ -68,7 +73,7 @@ export function loadSVG(url, opts) {
         let shapes = path.toShapes(true);
         shapes.forEach((shape) => {
           shape.closePath();
-          let geometry = new THREE.ShapeGeometry(shape);
+          let geometry = new THREE.ShapeBufferGeometry(shape);
           if (opts.extrude) {
             geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
           }
@@ -89,11 +94,10 @@ export function loadSVG(url, opts) {
             position[2]
           );
 
-          mesh.updateMatrixWorld();
-          mesh.geometry.applyMatrix4(mesh.matrixWorld);
-          mesh.matrixWorld.identity();
-
-          group.add(mesh);
+          mesh.updateMatrix(true);
+          // mesh.matrixWorld.identity();
+          // mesh.geometry.applyMatrix4(mesh.matrixWorld);
+          // group.add(mesh);
 
           if (opts.drawStrokes2) {
             const ml = new MeshLine();
@@ -103,18 +107,17 @@ export function loadSVG(url, opts) {
             meshLine.updateMatrixWorld();
             group.add(meshLine);
           }
+
+          if (opts.drawStrokes) {
+            const ml = new MeshLine();
+            //ml.setMatrixWorld(mesh.matrixWorld);
+            ml.setFromGeometry(path.subPaths[0].createPointsGeometry());
+            const meshLine = new THREE.Mesh(ml.geometry, strokeMaterial);
+            meshLine.geometry.applyMatrix4(mesh.matrix);
+            group.add(meshLine);
+          }
         });
 
-        if (opts.drawStrokes) {
-          const ml = new MeshLine();
-          // ml.setMatrixWorld(mesh.matrixWorld);
-          // mesh.geometry.vertices.push(mesh.geometry.vertices[0]);
-          // ml.setFromGeometry(mesh.geometry);
-          ml.setBufferArray(path.subPaths[0].createPointsGeometry());
-          const meshLine = new THREE.Mesh(ml.geometry, strokeMaterial);
-          meshLine.updateMatrixWorld();
-          group.add(meshLine);
-        }
       });
 
       scene.add(group);

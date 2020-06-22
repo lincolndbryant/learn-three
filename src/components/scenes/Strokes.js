@@ -13,10 +13,11 @@ export default () => {
     <>
       <Star
         url="/svg/drop-narrow.svg"
-        radius={0}
+        radius={100}
         numPoints={3}
         strokeColor={PEA}
         fillColor={NEW_ENGLAND}
+        depth={50}
         // zPosition={20}
         drawStrokes={true}
       />
