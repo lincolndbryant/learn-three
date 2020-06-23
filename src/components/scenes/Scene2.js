@@ -1,5 +1,4 @@
 import React from "react";
-import Shape from "../Shape";
 import Star from "../Star";
 import { NEW_ENGLAND, SLATE, TEAL } from "../../constants/colors";
 
@@ -11,6 +10,8 @@ export default () => {
         fillColor={TEAL}
         numPoints={16}
         zPosition={10}
+        opacity={0.8}
+        scale={0.8}
       />
 
       <Star
@@ -22,14 +23,13 @@ export default () => {
       />
 
       <Star
-        url="/svg/drop-01.svg"
-        numPoints={5}
         fillColor={SLATE}
-        strokeColor={NEW_ENGLAND}
+        numPoints={5}
+        url="/svg/drop-01.svg"
         radius={20}
         zPosition={40}
         opacity={0.8}
-        // scale={0.5}
+        scale={0.5}
       />
     </>
   );

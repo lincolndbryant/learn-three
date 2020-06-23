@@ -32,7 +32,7 @@ Star.propTypes = {
 };
 
 Star.defaultProps = {
-  numPoints: 12,
+  numPoints: 6,
   rotations: 1,
   radius: 0,
   zPosition: 0,

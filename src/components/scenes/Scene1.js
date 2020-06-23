@@ -8,6 +8,7 @@ export default () => {
       <Star
         url="/svg/drop.svg"
         fillColor={NEW_ENGLAND}
+        radius={100}
         numPoints={16}
         zPosition={10}
       />
@@ -18,7 +19,7 @@ export default () => {
         radius={100}
         scale={0.75}
         zPosition={20}
-        opacity={0.8}
+        opacity={0}
       />
 
       <Star

@@ -14,6 +14,7 @@ export default class Shape extends Component {
   static defaultProps = {
     position: [0, 0, 0],
     rotation: 0,
+    drawStrokes: false,
     drawStrokes2: false,
     extrude: true,
   };

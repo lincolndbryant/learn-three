@@ -1,12 +1,6 @@
 import React from "react";
 import Star from "../Star";
-import {
-  MOONLIGHT,
-  NEW_ENGLAND,
-  PEA,
-  SLATE,
-  TEAL,
-} from "../../constants/colors";
+import { NEW_ENGLAND, PEA } from "../../constants/colors";
 
 export default () => {
   return (
@@ -18,8 +12,7 @@ export default () => {
         strokeColor={PEA}
         fillColor={NEW_ENGLAND}
         depth={50}
-        // zPosition={20}
-        drawStrokes={true}
+        zPosition={20}
       />
     </>
   );

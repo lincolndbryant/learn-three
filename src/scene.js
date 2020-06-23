@@ -51,47 +51,23 @@ const onMouseMove = (e) => {
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 };
 
-function initGui() {
+export function initGui(layers = [], updateLayer) {
   gui = new GUI({ width: 350, autoPlace: true });
   const sceneFolder = gui.addFolder("Scene");
-  sceneFolder.add(sunlight, "intensity");
+  if (sunlight) {
+    sceneFolder.add(sunlight, "intensity");
+  }
+
+  layers.forEach((layer, i) => {
+    const layerFolder = gui.addFolder(`Layer ${i}`);
+    var controller = layerFolder.add(layer, "numPoints", 3, 16, 1);
+    controller.onFinishChange((val) => {
+      updateLayer(i, "numPoints", val);
+    });
+  });
 }
 
-export function initScene() {
-  let container = document.getElementById("container");
-
-  camera = new PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    10,
-    100000
-  );
-  camera.position.set(0, 0, 1000);
-
-  raycaster = new THREE.Raycaster();
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.shadowMap.enabled = true;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.sortObjects = true;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-  container.appendChild(renderer.domElement);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  // controls.screenSpacePanning = true;
-  // controls.autoRotate = true;
-
-  scene = new THREE.Scene();
-  scene.autoUpdate = true;
-
-  gridHelper = new THREE.GridHelper(1000, 10);
-  camera.lookAt(scene.position);
-  gridHelper.rotation.x = Math.PI / 2;
-  scene.add(gridHelper);
-
+function setupDebugLights() {
   sunlight = new THREE.DirectionalLight(SUNLIGHT, 5);
   sunlight.position.set(0, 1, 500);
   sunlight.castShadow = true;
@@ -114,6 +90,43 @@ export function initScene() {
 
   const helper = new THREE.CameraHelper(sunlight.shadow.camera);
   scene.add(helper);
+}
+
+export function initScene() {
+  let container = document.getElementById("container");
+
+  camera = new PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    10,
+    100000
+  );
+  camera.position.set(0, 0, 2500);
+
+  raycaster = new THREE.Raycaster();
+
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.shadowMap.enabled = true;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.sortObjects = true;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  container.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  // controls.screenSpacePanning = true;
+  // controls.autoRotate = true;
+  scene = new THREE.Scene();
+  scene.autoUpdate = true;
+  // setupDebugLights();
+
+  gridHelper = new THREE.GridHelper(1000, 10);
+  camera.lookAt(scene.position);
+  gridHelper.rotation.x = Math.PI / 2;
+  scene.add(gridHelper);
+
   composer = new EffectComposer(renderer);
 
   const renderPass = new RenderPass(scene, camera);
@@ -165,4 +178,10 @@ export function renderScene(now) {
 
 export function setAnimating(_animating) {
   animating = _animating;
+}
+
+export function clearScene() {
+  while (scene.children.length > 0) {
+    scene.remove(scene.children[0]);
+  }
 }

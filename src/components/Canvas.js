@@ -26,6 +26,9 @@ export default class Canvas extends Component {
     if (this.props.animating !== prevProps.animating) {
       setAnimating(this.props.animating);
     }
+    if (this.props.SceneComponent !== prevProps.SceneComponent) {
+      console.log("Changing scene to:", this.props.SceneComponent);
+    }
   }
 
   renderScene() {
@@ -40,7 +43,6 @@ export default class Canvas extends Component {
           scale={10}
           zPosition={-50}
           depth={2}
-          drawStrokes={true}
         />
         <SceneComponent />
       </>

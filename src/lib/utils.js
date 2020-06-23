@@ -97,7 +97,7 @@ export function loadSVG(url, opts) {
           mesh.updateMatrix(true);
           // mesh.matrixWorld.identity();
           // mesh.geometry.applyMatrix4(mesh.matrixWorld);
-          // group.add(mesh);
+          group.add(mesh);
 
           if (opts.drawStrokes2) {
             const ml = new MeshLine();
@@ -117,7 +117,6 @@ export function loadSVG(url, opts) {
             group.add(meshLine);
           }
         });
-
       });
 
       scene.add(group);
