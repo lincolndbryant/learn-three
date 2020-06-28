@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React from "react";
 import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import Shape from "./Shape";
@@ -12,7 +12,7 @@ const Star = ({ layer, numPoints, zPosition, radius, PointComponent }) => {
 
     return (
       <PointComponent
-        key={`${numPoints}-${i}`}
+        key={`${numPoints}-${radius}-${i}`}
         rotation={-rot}
         position={[Math.sin(rad) * radius, Math.cos(rad) * radius, zPosition]}
         {...layer}

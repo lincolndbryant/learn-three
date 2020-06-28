@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { TextureLoader, MeshBasicMaterial, MathUtils } from "three";
+import { TextureLoader, MeshPhongMaterial, MathUtils } from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { TEAL } from "../constants/colors";
 import { MeshLine, MeshLineMaterial } from "threejs-meshline";
@@ -53,7 +53,7 @@ export function loadSVG(url, opts) {
       if (opts.fillColor) {
         materialOpts.color = opts.fillColor;
       }
-      const material = new MeshBasicMaterial(materialOpts);
+      const material = new THREE.MeshStandardMaterial(materialOpts);
       const strokeMaterial = new MeshLineMaterial({
         lineWidth: 50,
         color: opts.strokeColor || TEAL,
@@ -80,7 +80,8 @@ export function loadSVG(url, opts) {
 
           let mesh = new THREE.Mesh(geometry, material);
           mesh.name = opts.name || `obj-${uniqueId()}`;
-          mesh.receiveShadow = true;
+          mesh.receiveShadows = true;
+          mesh.castShadow = true;
 
           if (scale) {
             mesh.scale.set(scale, scale, scale);

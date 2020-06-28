@@ -4,9 +4,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module";
 import Stats from "stats-js";
-import { SLATE, SUNLIGHT } from "./constants/colors";
+import {initGui} from "./scene/gui";
 
 let scene;
 let renderer;
@@ -15,7 +14,6 @@ let composer;
 let outlinePass;
 let startAt;
 let stats;
-let gui;
 let raycaster;
 let sunlight;
 let animating = false;
@@ -51,47 +49,21 @@ const onMouseMove = (e) => {
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 };
 
-export function initGui(layers = [], updateLayer) {
-  gui = new GUI({ width: 350, autoPlace: true });
-  const sceneFolder = gui.addFolder("Scene");
-  if (sunlight) {
-    sceneFolder.add(sunlight, "intensity");
-  }
-
-  layers
-    .toList()
-    .toJS()
-    .forEach((layer) => {
-      const layerFolder = gui.addFolder(`Layer ${layer.id}`);
-      var controller = layerFolder.add(layer, "numPoints", 3, 16, 1);
-      controller.onFinishChange((val) => {
-        updateLayer(layer.id, "numPoints", val);
-      });
-    });
-}
-
 function setupDebugLights() {
-  sunlight = new THREE.DirectionalLight(SUNLIGHT, 5);
-  sunlight.position.set(0, 1, 500);
+  sunlight = new THREE.PointLight('#ffffff', 1);
+  sunlight.decay = 1;
+  sunlight.position.set(10, 10, 200);
+  sunlight.rotation.x = Math.PI / 2;
   sunlight.castShadow = true;
   scene.add(sunlight);
   scene.add(sunlight.target);
 
-  const sphereGeometry = new THREE.SphereBufferGeometry(50, 32, 32);
-  const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-  sphere.position.set(0, 0, 100);
-  sphere.castShadow = true; //default is false
-  sphere.receiveShadow = false; //default
-  scene.add(sphere);
+  const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x202020, 2);
+  scene.add(ambientLight);
 
-  const planeGeometry = new THREE.PlaneBufferGeometry(800, 800, 32, 32);
-  var planeMaterial = new THREE.MeshStandardMaterial({ color: SLATE });
-  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  plane.receiveShadow = true;
-  scene.add(plane);
+  scene.userData.sunlight = sunlight;
 
-  const helper = new THREE.CameraHelper(sunlight.shadow.camera);
+  const helper = new THREE.PointLightHelper(sunlight, 50);
   scene.add(helper);
 }
 
@@ -123,7 +95,7 @@ export function initScene() {
   // controls.autoRotate = true;
   scene = new THREE.Scene();
   scene.autoUpdate = true;
-  // setupDebugLights();
+  setupDebugLights();
 
   gridHelper = new THREE.GridHelper(1000, 10);
   camera.lookAt(scene.position);
@@ -146,8 +118,6 @@ export function initScene() {
   outlinePass.visibleEdgeColor = new THREE.Color("#00ff00");
   composer.addPass(outlinePass);
 
-  // initGui();
-
   stats = new Stats();
   document.body.append(stats.domElement);
   startAt = Date.now();
@@ -156,6 +126,7 @@ export function initScene() {
   document.addEventListener("mousemove", onMouseMove, false);
   document.addEventListener("click", onClick, false);
   window._scene = scene;
+  initGui(scene);
 
   return scene;
 }

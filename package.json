@@ -18,9 +18,9 @@
     "threejs-meshline": "^2.0.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --no-cache",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject",
     "prettier:write": "prettier --write ."
   },

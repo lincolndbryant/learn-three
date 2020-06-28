@@ -9,14 +9,16 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      e.preventDefault();
       if (e.keyCode === 32) {
         setAnimating(!animating);
       } else if (e.key === "ArrowLeft") {
         setSceenIndex((sceneIndex - 1) % SCENES.length);
       } else if (e.key === "ArrowRight") {
         setSceenIndex((sceneIndex + 1) % SCENES.length);
+      } else {
+        return;
       }
+      e.preventDefault();
     };
 
     window.addEventListener("keydown", onKeyDown);

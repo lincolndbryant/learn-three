@@ -1,19 +1,37 @@
 import { Map, OrderedMap } from "immutable";
-import { NEW_ENGLAND, TEAL } from "../constants/colors";
+import {MOONLIGHT, NEW_ENGLAND, SLATE, TEAL} from "../constants/colors";
 
 const DEFAULT_LAYER_DATA = [
   {
     url: "/svg/drop-01.svg",
+    fillColor: SLATE,
+    radius: 50,
+    numPoints: 8,
+  },
+  {
+    url: "/svg/drop-01.svg",
     fillColor: NEW_ENGLAND,
-    radius: 100,
-    numPoints: 6,
+    textureUrl: "/img/mosaic.jpg",
+    radius: 50,
+    numPoints: 8,
+    scale:  0.95,
+    zPosition: 5,
   },
   {
     url: "/svg/drop-narrow.svg",
     fillColor: TEAL,
     radius: 50,
-    numPoints: 4,
+    numPoints: 8,
     zPosition: 10,
+    scale: 0.8,
+  },
+  {
+    url: "/svg/claw.svg",
+    fillColor: MOONLIGHT,
+    radius: 50,
+    numPoints: 4,
+    zPosition: 20,
+    scale: 0.6,
   },
 ];
 

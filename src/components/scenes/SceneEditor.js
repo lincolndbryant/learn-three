@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { List } from "immutable";
 import Star from "../Star";
-import { clearScene, initGui } from "../../scene";
+import { clearScene } from "../../scene";
 import { DEFAULT_LAYERS } from "../../lib/layer";
+import {createLayerControls} from "../../scene/gui";
 
-const SceneEditor = ({ layers }) => {
-  const [layerState, setLayers] = useState(layers);
+const SceneEditor = () => {
+  const [layers, setLayers] = useState(DEFAULT_LAYERS);
 
   const updateLayer = (id, prop, val) => {
     console.log(`updateLayer:`, id, prop, val);
-    setLayers(layers.setIn([id, prop], val));
+    setLayers(layerState => layerState.setIn([id, prop], val));
   };
 
   useEffect(() => {
-    initGui(layers, updateLayer);
+    createLayerControls(layers.toList().toJS(), updateLayer);
 
     return () => {
       clearScene();
@@ -35,15 +34,7 @@ const SceneEditor = ({ layers }) => {
     );
   };
 
-  return <>{layerState.map(renderLayer)}</>;
-};
-
-SceneEditor.propTypes = {
-  layers: PropTypes.instanceOf(List).isRequired,
-};
-
-SceneEditor.defaultProps = {
-  layers: DEFAULT_LAYERS,
+  return <>{layers.toList().map(renderLayer)}</>;
 };
 
 export default SceneEditor;

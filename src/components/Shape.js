@@ -29,7 +29,6 @@ export default class Shape extends Component {
   }
 
   componentWillUnmount() {
-    console.log("removing", this.g);
     window.scene.remove(this.g);
   }
 
