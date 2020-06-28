@@ -4,6 +4,7 @@ import { loadSVG } from "../lib/utils";
 
 export default class Shape extends Component {
   static propTypes = {
+    layerId: PropTypes.number,
     url: PropTypes.string,
     fillColor: PropTypes.string,
     position: PropTypes.array,
@@ -20,13 +21,15 @@ export default class Shape extends Component {
   };
 
   componentDidMount() {
-    const { url } = this.props;
+    const { url, layerId } = this.props;
     loadSVG(url, this.props).then((g) => {
+      g.userData.layerId = layerId;
       this.g = g;
     });
   }
 
   componentWillUnmount() {
+    console.log("removing", this.g);
     window.scene.remove(this.g);
   }
 

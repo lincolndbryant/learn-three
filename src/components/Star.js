@@ -1,20 +1,21 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import Shape from "./Shape";
 
-const Star = ({ numPoints, zPosition, radius, PointComponent, ...rest }) => {
+const Star = ({ layer, numPoints, zPosition, radius, PointComponent }) => {
   const stepSize = 360 / numPoints;
+
   return range(0, 360, stepSize).map((rot, i) => {
     const rad = MathUtils.degToRad(rot);
 
     return (
       <PointComponent
-        key={i}
+        key={`${numPoints}-${i}`}
         rotation={-rot}
         position={[Math.sin(rad) * radius, Math.cos(rad) * radius, zPosition]}
-        {...rest}
+        {...layer}
       />
     );
   });

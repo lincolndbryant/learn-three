@@ -58,13 +58,16 @@ export function initGui(layers = [], updateLayer) {
     sceneFolder.add(sunlight, "intensity");
   }
 
-  layers.forEach((layer, i) => {
-    const layerFolder = gui.addFolder(`Layer ${i}`);
-    var controller = layerFolder.add(layer, "numPoints", 3, 16, 1);
-    controller.onFinishChange((val) => {
-      updateLayer(i, "numPoints", val);
+  layers
+    .toList()
+    .toJS()
+    .forEach((layer) => {
+      const layerFolder = gui.addFolder(`Layer ${layer.id}`);
+      var controller = layerFolder.add(layer, "numPoints", 3, 16, 1);
+      controller.onFinishChange((val) => {
+        updateLayer(layer.id, "numPoints", val);
+      });
     });
-  });
 }
 
 function setupDebugLights() {
@@ -143,7 +146,7 @@ export function initScene() {
   outlinePass.visibleEdgeColor = new THREE.Color("#00ff00");
   composer.addPass(outlinePass);
 
-  initGui();
+  // initGui();
 
   stats = new Stats();
   document.body.append(stats.domElement);
@@ -180,8 +183,11 @@ export function setAnimating(_animating) {
   animating = _animating;
 }
 
-export function clearScene() {
-  while (scene.children.length > 0) {
-    scene.remove(scene.children[0]);
+export function clearScene(layerId) {
+  let shapes = scene.children.filter((s) => s.type === "Group");
+  if (layerId) {
+    shapes = shapes.filter((s) => s.userData.layerId === layerId);
   }
+  console.log(`clearing scene layer ${layerId} of children`, shapes);
+  shapes.forEach((shape) => scene.remove(shape));
 }
