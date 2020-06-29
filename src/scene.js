@@ -5,7 +5,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
 import Stats from "stats-js";
-import {initGui} from "./scene/gui";
+import { initGui } from "./scene/gui";
 
 let scene;
 let renderer;
@@ -50,21 +50,17 @@ const onMouseMove = (e) => {
 };
 
 function setupDebugLights() {
-  sunlight = new THREE.PointLight('#ffffff', 1);
+  sunlight = new THREE.PointLight("#ffffff", 1);
   sunlight.decay = 1;
-  sunlight.position.set(10, 10, 200);
-  sunlight.rotation.x = Math.PI / 2;
+  sunlight.position.set(0, 0, 200);
+  // sunlight.rotation.x = Math.PI / 2;
   sunlight.castShadow = true;
   scene.add(sunlight);
-  scene.add(sunlight.target);
 
   const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x202020, 2);
   scene.add(ambientLight);
 
   scene.userData.sunlight = sunlight;
-
-  const helper = new THREE.PointLightHelper(sunlight, 50);
-  scene.add(helper);
 }
 
 export function initScene() {

@@ -28,6 +28,12 @@ export default class Shape extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.fillColor !== this.props.fillColor) {
+      this.g.children[0].material.color.set(this.props.fillColor);
+    }
+  }
+
   componentWillUnmount() {
     window.scene.remove(this.g);
   }

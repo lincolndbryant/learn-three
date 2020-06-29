@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import Star from "../Star";
 import { clearScene } from "../../scene";
 import { DEFAULT_LAYERS } from "../../lib/layer";
-import {createLayerControls} from "../../scene/gui";
+import { createLayerControls } from "../../scene/gui";
 
 const SceneEditor = () => {
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
 
   const updateLayer = (id, prop, val) => {
     console.log(`updateLayer:`, id, prop, val);
-    setLayers(layerState => layerState.setIn([id, prop], val));
+    setLayers((layerState) => layerState.setIn([id, prop], val));
   };
 
   useEffect(() => {

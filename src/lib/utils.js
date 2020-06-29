@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { TextureLoader, MeshPhongMaterial, MathUtils } from "three";
+import { TextureLoader, MathUtils } from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { TEAL } from "../constants/colors";
 import { MeshLine, MeshLineMaterial } from "threejs-meshline";
@@ -65,7 +65,7 @@ export function loadSVG(url, opts) {
 
       const extrudeSettings = {
         ...EXTRUDE_DEFAULTS,
-        depth: opts.depth || 1,
+        depth: opts.depth || 10,
       };
       paths.forEach((path) => {
         window.path = path;

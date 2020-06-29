@@ -37,7 +37,8 @@ export default class Canvas extends Component {
       <>
         <Shape
           url="/svg/hexagon.svg"
-          textureUrl={"/img/dark-stone.jpg"}
+          textureUrl={"/img/concrete.jpg"}
+          fillColor={"#333333"}
           name="hexagon"
           position={[0, 0, -50]}
           scale={10}

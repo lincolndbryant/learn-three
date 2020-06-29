@@ -1,0 +1,39 @@
+{
+  "layers": [
+    {
+      "url": "/svg/drop-01.svg",
+      "fillColor": "SLATE",
+      "radius": 50,
+      "numPoints": 8
+    },
+    {
+      "url": "/svg/drop-01.svg",
+      "fillColor": "NEW_ENGLAND",
+      "textureUrl": "/img/mosaic.jpg",
+      "radius": 50,
+      "numPoints": 8,
+      "scale": 0.95,
+      "zPosition": 50,
+      "depth": 50
+    },
+    {
+      "url": "/svg/drop-narrow.svg",
+      "fillColor": "TEAL",
+      "opacity": 0.6,
+      "radius": 50,
+      "numPoints": 8,
+      "zPosition": 100,
+      "scale": 0.8,
+      "depth": 50
+    },
+    {
+      "url": "/svg/claw.svg",
+      "fillColor": "MOONLIGHT",
+      "radius": 50,
+      "numPoints": 4,
+      "zPosition": 200,
+      "depth": 200,
+      "scale": 0.6
+    }
+  ]
+}
