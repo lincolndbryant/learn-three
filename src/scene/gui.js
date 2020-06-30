@@ -36,5 +36,13 @@ const createLayer = (layer, updateLayer) => {
 };
 
 export function createLayerControls(layers = [], updateLayer) {
+  if (gui) {
+    try {
+      gui.destroy();
+    } catch (e) {
+      console.warn(e);
+    }
+    initGui(window._scene);
+  }
   layers.forEach((layer) => createLayer(layer, updateLayer));
 }

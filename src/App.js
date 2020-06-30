@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas";
-import SCENES from "./components/scenes";
+import PATTERNS from "./patterns";
 
 function App() {
   const [animating, setAnimating] = useState(false);
-  const [sceneIndex, setSceenIndex] = useState(0);
+  const [patternIndex, setPatternIndex] = useState(0);
 
   useEffect(() => {
     const onKeyDown = (e) => {
+      if (e.metaKey) {
+        return;
+      }
+
       if (e.keyCode === 32) {
         setAnimating(!animating);
       } else if (e.key === "ArrowLeft") {
-        setSceenIndex((sceneIndex - 1) % SCENES.length);
+        setPatternIndex((patternIndex - 1) % PATTERNS.length);
       } else if (e.key === "ArrowRight") {
-        setSceenIndex((sceneIndex + 1) % SCENES.length);
+        setPatternIndex((patternIndex + 1) % PATTERNS.length);
       } else {
         return;
       }
@@ -30,9 +34,14 @@ function App() {
 
   return (
     <div className="App">
+      <div className="controls">
+        <select value={patternIndex} onChange={e => setPatternIndex(e.target.value)}>
+          {PATTERNS.map((pattern, i) => <option key={i} value={i}>{pattern.name}</option>)}
+        </select>
+      </div>
       <Canvas
         animating={animating}
-        SceneComponent={SCENES[sceneIndex] || SCENES[0]}
+        pattern={PATTERNS[patternIndex] || PATTERNS[0]}
       />
     </div>
   );

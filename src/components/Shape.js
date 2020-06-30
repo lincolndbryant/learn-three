@@ -22,6 +22,7 @@ export default class Shape extends Component {
 
   componentDidMount() {
     const { url, layerId } = this.props;
+    console.log('drawing shape', this.props);
     loadSVG(url, this.props).then((g) => {
       g.userData.layerId = layerId;
       this.g = g;
@@ -35,7 +36,11 @@ export default class Shape extends Component {
   }
 
   componentWillUnmount() {
-    window.scene.remove(this.g);
+    console.log('removing shape', this.g);
+    if (this.g) {
+      window.scene.remove(this.g.children[0]);
+      window.scene.remove(this.g);
+    }
   }
 
   render() {

@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { initScene, renderScene, setAnimating } from "../scene";
 import Shape from "./Shape";
+import SceneEditor from "./scenes/SceneEditor";
 
 export default class Canvas extends Component {
   static propTypes = {
     animating: PropTypes.bool,
+    pattern: PropTypes.object,
     SceneComponent: PropTypes.elementType.isRequired,
+  };
+
+  static defaultProps = {
+    SceneComponent: SceneEditor,
   };
 
   constructor(props) {
@@ -32,7 +38,7 @@ export default class Canvas extends Component {
   }
 
   renderScene() {
-    const { SceneComponent } = this.props;
+    const { SceneComponent, pattern } = this.props;
     return (
       <>
         <Shape
@@ -45,7 +51,7 @@ export default class Canvas extends Component {
           zPosition={-50}
           depth={2}
         />
-        <SceneComponent />
+        {SceneComponent && <SceneComponent pattern={pattern} />}
       </>
     );
   }

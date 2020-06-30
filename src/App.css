@@ -10,3 +10,12 @@ body {
   left: 0;
   top: 0;
 }
+
+.controls {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  padding: 50px;
+  background: grey;
+}

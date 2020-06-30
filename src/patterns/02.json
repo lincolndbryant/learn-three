@@ -2,9 +2,9 @@
   "layers": [
     {
       "url": "/svg/drop.svg",
-      "fillColor": "SLATE",
+      "fillColor": "MOONLIGHT",
       "radius": 50,
-      "numPoints": 12
+      "numPoints": 8
     },
     {
       "url": "/svg/drop-01.svg",
@@ -12,23 +12,15 @@
       "radius": 50,
       "numPoints": 8,
       "scale": 0.95,
-      "zPosition": 6
+      "zPosition": 10
     },
     {
       "url": "/svg/drop-narrow.svg",
       "fillColor": "TEAL",
       "radius": 50,
       "numPoints": 8,
-      "zPosition": 10,
-      "scale": 0.8
-    },
-    {
-      "url": "/svg/claw.svg",
-      "fillColor": "MOONLIGHT",
-      "radius": 50,
-      "numPoints": 4,
       "zPosition": 20,
-      "scale": 0.6
+      "scale": 0.8
     }
   ]
 }

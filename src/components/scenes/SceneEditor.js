@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Star from "../Star";
-import { clearScene } from "../../scene";
-import { DEFAULT_LAYERS } from "../../lib/layer";
+import {clearScene, initScene} from "../../scene";
 import { createLayerControls } from "../../scene/gui";
 
-const SceneEditor = () => {
-  const [layers, setLayers] = useState(DEFAULT_LAYERS);
+const SceneEditor = ({ pattern }) => {
+  useEffect(() => {
+    return () => {
+      clearScene();
+    };
+  }, []);
+
+  const [layers, setLayers] = useState(null);
 
   const updateLayer = (id, prop, val) => {
     console.log(`updateLayer:`, id, prop, val);
@@ -13,12 +18,12 @@ const SceneEditor = () => {
   };
 
   useEffect(() => {
+    console.log('pattern update', pattern);
+    const { layers } = pattern;
+    clearScene();
     createLayerControls(layers.toList().toJS(), updateLayer);
-
-    return () => {
-      clearScene();
-    };
-  }, []);
+    setLayers(layers);
+  }, [pattern]);
 
   const renderLayer = (layer, i) => {
     const layerData = layer.toJS();
@@ -34,6 +39,9 @@ const SceneEditor = () => {
     );
   };
 
+  if (!layers) {
+    return null;
+  }
   return <>{layers.toList().map(renderLayer)}</>;
 };
 
