@@ -4,7 +4,7 @@ import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import Shape from "./Shape";
 
-const Star = ({ layer, numPoints, zPosition, radius, PointComponent }) => {
+const Star = ({ layer, patternId, numPoints, zPosition, radius, PointComponent }) => {
   const stepSize = 360 / numPoints;
 
   return range(0, 360, stepSize).map((rot, i) => {
@@ -12,9 +12,11 @@ const Star = ({ layer, numPoints, zPosition, radius, PointComponent }) => {
 
     return (
       <PointComponent
-        key={`${numPoints}-${radius}-${i}`}
+        key={i}
         rotation={-rot}
         position={[Math.sin(rad) * radius, Math.cos(rad) * radius, zPosition]}
+        patternId={patternId}
+        layerId={layer.id}
         {...layer}
       />
     );

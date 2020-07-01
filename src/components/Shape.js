@@ -5,6 +5,7 @@ import { loadSVG } from "../lib/utils";
 export default class Shape extends Component {
   static propTypes = {
     layerId: PropTypes.number,
+    patternId: PropTypes.string,
     url: PropTypes.string,
     fillColor: PropTypes.string,
     position: PropTypes.array,
@@ -21,6 +22,27 @@ export default class Shape extends Component {
   };
 
   componentDidMount() {
+    this.drawShape();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.patternId !== prevProps.patternId) {
+      console.log('pattern updated updated', this);
+      this.removeShape();
+      this.drawShape();
+      return;
+    }
+    if (prevProps.fillColor !== this.props.fillColor) {
+      this.removeShape();
+      this.drawShape();
+    }
+  }
+
+  componentWillUnmount() {
+    this.removeShape();
+  }
+
+  drawShape() {
     const { url, layerId } = this.props;
     console.log('drawing shape', this.props);
     loadSVG(url, this.props).then((g) => {
@@ -29,17 +51,11 @@ export default class Shape extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.fillColor !== this.props.fillColor) {
-      this.g.children[0].material.color.set(this.props.fillColor);
-    }
-  }
-
-  componentWillUnmount() {
-    console.log('removing shape', this.g);
+  removeShape() {
     if (this.g) {
-      window.scene.remove(this.g.children[0]);
+      console.log('removing shape', this.g);
       window.scene.remove(this.g);
+    } else {
     }
   }
 

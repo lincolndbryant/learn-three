@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Star from "../Star";
-import {clearScene, initScene} from "../../scene";
+import {clearScene} from "../../scene";
 import { createLayerControls } from "../../scene/gui";
 
 const SceneEditor = ({ pattern }) => {
-  useEffect(() => {
-    return () => {
-      clearScene();
-    };
-  }, []);
-
   const [layers, setLayers] = useState(null);
 
   const updateLayer = (id, prop, val) => {
@@ -30,11 +24,12 @@ const SceneEditor = ({ pattern }) => {
     const { numPoints, radius, zPosition, ...rest } = layerData;
     return (
       <Star
-        key={i}
+        key={`${pattern.name}-${i}`}
         numPoints={numPoints}
         radius={radius}
         zPosition={zPosition}
         layer={rest}
+        patternId={pattern.name}
       />
     );
   };
@@ -42,7 +37,7 @@ const SceneEditor = ({ pattern }) => {
   if (!layers) {
     return null;
   }
-  return <>{layers.toList().map(renderLayer)}</>;
+  return <div className="scene-editor">{layers.toList().map(renderLayer)}</div>;
 };
 
 export default SceneEditor;
