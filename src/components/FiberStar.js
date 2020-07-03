@@ -1,14 +1,20 @@
 import PropTypes from "prop-types";
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import SVGShape from "./SVGShape";
 
-const FiberStar = ({ numPoints, radius, zPosition, PointComponent, ...rest }) => {
+const FiberStar = ({
+  numPoints,
+  radius,
+  zPosition,
+  PointComponent,
+  ...rest
+}) => {
   const stepSize = 360 / numPoints;
   return range(0, 360, stepSize).map((rot, i) => {
     const rad = MathUtils.degToRad(rot);
-    if (typeof rest.scale === 'number') {
+    if (typeof rest.scale === "number") {
       rest.scale = [rest.scale, rest.scale, rest.scale];
     }
 

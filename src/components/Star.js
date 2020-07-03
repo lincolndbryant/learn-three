@@ -4,7 +4,14 @@ import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import Shape from "./Shape";
 
-const Star = ({ layer, patternId, numPoints, zPosition, radius, PointComponent }) => {
+const Star = ({
+  layer,
+  patternId,
+  numPoints,
+  zPosition,
+  radius,
+  PointComponent,
+}) => {
   const stepSize = 360 / numPoints;
 
   return range(0, 360, stepSize).map((rot, i) => {

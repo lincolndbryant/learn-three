@@ -20,6 +20,10 @@ export const range = (start, stop, step = 1) => {
     .map((x, y) => x + y * step);
 };
 
+export function pick(o, ...props) {
+  return Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })));
+}
+
 let _id = 0;
 
 const uniqueId = () => _id++;
@@ -125,3 +129,18 @@ export function loadSVG(url, opts) {
     });
   });
 }
+
+export const processSVG = (svgData) => {
+  const processed = svgData.paths.flatMap((path, index) => {
+    const shapes = path.toShapes(true);
+    return shapes.map((shape) => {
+      return {
+        shape,
+        geometry: new THREE.Geometry().setFromPoints(shape.getPoints()),
+        color: path.color,
+        index,
+      };
+    });
+  });
+  return processed[0];
+};

@@ -35,8 +35,15 @@ function App() {
   return (
     <div className="App">
       <div className="controls">
-        <select value={patternIndex} onChange={e => setPatternIndex(e.target.value)}>
-          {PATTERNS.map((pattern, i) => <option key={i} value={i}>{pattern.name}</option>)}
+        <select
+          value={patternIndex}
+          onChange={(e) => setPatternIndex(e.target.value)}
+        >
+          {PATTERNS.map((pattern, i) => (
+            <option key={i} value={i}>
+              {pattern.name}
+            </option>
+          ))}
         </select>
       </div>
       <Canvas

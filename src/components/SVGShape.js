@@ -1,8 +1,12 @@
-import React, {useMemo} from "react";
-import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader'
-import {useLoader} from 'react-three-fiber'
-import {TEAL} from "../constants/colors";
+import React, { useMemo } from "react";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
+import { extend, useLoader } from "react-three-fiber";
+import { MOONLIGHT, TEAL } from "../constants/colors";
 import * as THREE from "three";
+import { pick, processSVG } from "../lib/utils";
+import * as meshline from "threejs-meshline";
+
+extend(meshline);
 
 const EXTRUDE_DEFAULTS = {
   bevelEnabled: false,
@@ -13,30 +17,55 @@ const EXTRUDE_DEFAULTS = {
 };
 
 const SVGShape = ({ url, rotation, fillColor = TEAL, ...rest }) => {
-  const svg = useLoader(SVGLoader, url)
-  const shape = useMemo(() => {
-      return svg.paths.flatMap((path, index) =>
-        path
-          .toShapes(true)
-          .map((shape) => ({shape, color: path.color, fillOpacity: path.userData.style.fillOpacity, index}))
-      )[0]
-    }, [svg]
-  );
+  const svg = useLoader(SVGLoader, url);
+  const shape = useMemo(() => processSVG(svg), [svg]);
 
-  const [texture] = useLoader(THREE.TextureLoader, rest.textureUrl ? [rest.textureUrl] : []);
+  const [texture] = useLoader(
+    THREE.TextureLoader,
+    rest.textureUrl ? [rest.textureUrl] : []
+  );
   if (texture) {
     texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
     texture.offset.set(0, 0);
-    texture.repeat.set(0.001 * 1, 0.001 * 1);
-    console.log(texture);
+    texture.repeat.set(0.001, 0.001);
   }
 
+  const materialProps = {
+    opacity: rest.opacity || 0.5,
+    color: fillColor || shape.color,
+  };
+  const meshProps = {
+    position: rest.position,
+    rotation: [0, 0, rotation || 0],
+    scale: rest.scale,
+  };
+
   return (
-    <mesh rotation={[0, 0, rotation]} {...rest}>
-      <meshStandardMaterial attach="material" color={fillColor || shape.color} map={texture} />
-      <extrudeGeometry attach="geometry" args={[shape.shape, EXTRUDE_DEFAULTS]} />
-    </mesh>
-  )
+    <>
+      <mesh {...meshProps}>
+        <meshStandardMaterial
+          attach="material"
+          map={texture}
+          transparent
+          {...materialProps}
+        />
+        <extrudeGeometry
+          attach="geometry"
+          args={[shape.shape, EXTRUDE_DEFAULTS]}
+        />
+      </mesh>
+      <mesh {...meshProps}>
+        <meshLine attach="geometry" geometry={shape.geometry} />
+        <meshLineMaterial
+          attach="material"
+          depthTest={true}
+          lineWidth={10}
+          color={MOONLIGHT}
+          sizeAttenuation={1}
+        />
+      </mesh>
+    </>
+  );
 };
 
 export default SVGShape;
