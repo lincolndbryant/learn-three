@@ -6,7 +6,8 @@ body {
   background: black;
 }
 
-#root {
+#root,
+.App {
   position: fixed;
   left: 0;
   top: 0;
@@ -19,6 +20,6 @@ body {
   z-index: 100;
   left: 0;
   top: 0;
-  padding: 50px;
+  padding: 5rem;
   background: grey;
 }

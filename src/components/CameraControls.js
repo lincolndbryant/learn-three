@@ -4,7 +4,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 extend({ OrbitControls });
 
-const CameraControls = () => {
+let startAt;
+let elapsedMs = 0;
+let pausedMs = 0;
+
+const CameraControls = ({ animating }) => {
+  if (!startAt) {
+    startAt = Date.now();
+  }
   // Get a reference to the Three.js Camera, and the canvas html element.
   // We need these to setup the OrbitControls component.
   // https://threejs.org/docs/#examples/en/controls/OrbitControls
@@ -14,9 +21,12 @@ const CameraControls = () => {
   } = useThree();
   // Ref to the controls, so that we can update them on every frame using useFrame
   const controls = useRef();
-  let elapsedMs = 0;
   useFrame(({ camera }, delta) => {
-    elapsedMs += delta * 0.4;
+    if (animating) {
+      elapsedMs += delta;
+    } else {
+      pausedMs += delta;
+    }
     controls.current.update();
     camera.rotation.z = elapsedMs % 360;
   });

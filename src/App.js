@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import Canvas from "./components/Canvas";
+import { Canvas } from "react-three-fiber";
 import PATTERNS from "./patterns";
+import FiberCanvas from "./components/FiberCanvas";
+import "./App.css";
+import Pattern from "./components/PatternManager";
 
 function App() {
   const [animating, setAnimating] = useState(false);
@@ -32,6 +34,7 @@ function App() {
     };
   });
 
+  const pattern = PATTERNS[patternIndex] || PATTERNS[0];
   return (
     <div className="App">
       <div className="controls">
@@ -47,9 +50,16 @@ function App() {
         </select>
       </div>
       <Canvas
-        animating={animating}
-        pattern={PATTERNS[patternIndex] || PATTERNS[0]}
-      />
+        camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000 }}
+        onCreated={(scene) => {
+          window._scene = scene;
+          scene.camera.lookAt(0, 0, 0);
+        }}
+      >
+        <FiberCanvas animating={animating}>
+          <Pattern pattern={pattern} />
+        </FiberCanvas>
+      </Canvas>
     </div>
   );
 }

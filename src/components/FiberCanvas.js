@@ -1,13 +1,11 @@
 import React, { Suspense } from "react";
-import { MOONLIGHT, SLATE, TEAL } from "../constants/colors";
-import FiberStar from "./FiberStar";
 import SVGShape from "./SVGShape";
 import CameraControls from "./CameraControls";
 
-const FiberCanvas = () => {
+const FiberCanvas = ({ pattern, animating, children }) => {
   return (
     <>
-      <CameraControls />
+      <CameraControls animating={animating} />
       <ambientLight />
       <gridHelper args={[2000, 20]} rotation={[Math.PI / 2, 0, 0]} />
       <pointLight position={[0, 0, 100]} />
@@ -19,28 +17,7 @@ const FiberCanvas = () => {
           zPosition={-20}
         />
       </Suspense>
-      <FiberStar
-        url="/svg/drop.svg"
-        numPoints={9}
-        fillColor={SLATE}
-        radius={100}
-      />
-      <FiberStar
-        url="/svg/drop-01.svg"
-        textureUrl="/img/mosaic.jpg"
-        numPoints={6}
-        fillColor={TEAL}
-        radius={150}
-        zPosition={50}
-        scale={0.8}
-      />
-      <FiberStar
-        url="/svg/claw.svg"
-        numPoints={4}
-        fillColor={MOONLIGHT}
-        zPosition={80}
-        scale={0.5}
-      />
+      {children}
     </>
   );
 };

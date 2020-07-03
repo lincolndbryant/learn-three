@@ -16,7 +16,13 @@ const EXTRUDE_DEFAULTS = {
   extrudeMaterial: 1, //material index of the side faces
 };
 
-const SVGShape = ({ url, rotation, fillColor = TEAL, ...rest }) => {
+const SVGShape = ({
+  url,
+  rotation,
+  fillColor = TEAL,
+  strokeWidth,
+  ...rest
+}) => {
   const svg = useLoader(SVGLoader, url);
   const shape = useMemo(() => processSVG(svg), [svg]);
 
@@ -31,13 +37,32 @@ const SVGShape = ({ url, rotation, fillColor = TEAL, ...rest }) => {
   }
 
   const materialProps = {
-    opacity: rest.opacity || 0.5,
+    opacity: rest.opacity || 0.9,
     color: fillColor || shape.color,
   };
   const meshProps = {
     position: rest.position,
     rotation: [0, 0, rotation || 0],
     scale: rest.scale,
+  };
+  const extrudeSettings = {
+    ...EXTRUDE_DEFAULTS,
+    depth: rest.depth || 10,
+  };
+
+  const renderStroke = () => {
+    return (
+      <mesh {...meshProps}>
+        <meshLine attach="geometry" geometry={shape.geometry} />
+        <meshLineMaterial
+          attach="material"
+          depthTest={true}
+          lineWidth={10}
+          color={MOONLIGHT}
+          sizeAttenuation={1}
+        />
+      </mesh>
+    );
   };
 
   return (
@@ -51,19 +76,10 @@ const SVGShape = ({ url, rotation, fillColor = TEAL, ...rest }) => {
         />
         <extrudeGeometry
           attach="geometry"
-          args={[shape.shape, EXTRUDE_DEFAULTS]}
+          args={[shape.shape, extrudeSettings]}
         />
       </mesh>
-      <mesh {...meshProps}>
-        <meshLine attach="geometry" geometry={shape.geometry} />
-        <meshLineMaterial
-          attach="material"
-          depthTest={true}
-          lineWidth={10}
-          color={MOONLIGHT}
-          sizeAttenuation={1}
-        />
-      </mesh>
+      {strokeWidth && renderStroke()}
     </>
   );
 };
