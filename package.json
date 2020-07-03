@@ -8,11 +8,11 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "immutable": "^4.0.0-rc.12",
-    "partial": "^0.0.7",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "react-three-fiber": "^4.2.12",
     "stats-js": "^1.0.1",
     "three": "^0.116.1",
     "threejs-meshline": "^2.0.11"
