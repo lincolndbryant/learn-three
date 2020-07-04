@@ -10,6 +10,9 @@ export const createLayers = (layers) => {
       if (COLORS[layer.fillColor]) {
         layer.fillColor = COLORS[layer.fillColor];
       }
+      if (COLORS[layer.strokeColor]) {
+        layer.strokeColor = COLORS[layer.strokeColor];
+      }
       return [i + 1, Map(layer)];
     })
   );

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Canvas } from "react-three-fiber";
 import PATTERNS from "./patterns";
 import FiberCanvas from "./components/FiberCanvas";
-import "./App.css";
 import Pattern from "./components/PatternManager";
 import SceneControls from "./components/SceneControls";
+import "./App.css";
+import useQueryString from "./hooks/useQueryString";
 
 function App() {
   const [animating, setAnimating] = useState(false);
-  const [patternIndex, setPatternIndex] = useState(0);
   const [intensity, setIntensity] = useState(1);
+  const [patternIndex, setPatternIndex] = useQueryString('i', 0);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -50,7 +51,7 @@ function App() {
         setIntensity={setIntensity}
       />
       <Canvas
-        camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000 }}
+        camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000, up: [0, 0, 100] }}
         onCreated={(scene) => {
           window.__scene = scene;
           scene.camera.lookAt(0, 0, 0);

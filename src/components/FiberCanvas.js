@@ -7,9 +7,9 @@ const FiberCanvas = ({ animating, intensity, children }) => {
   return (
     <>
       <CameraControls animating={animating} />
-      <ambientLight color={MOONLIGHT} />
+      <ambientLight position={[0, 0, 500]} color={MOONLIGHT} />
       <gridHelper args={[2000, 20]} rotation={[Math.PI / 2, 0, 0]} />
-      <pointLight position={[0, 0, 100]} intensity={intensity} />
+      <pointLight position={[0, 0, 500]} intensity={intensity} />
       <Suspense fallback={null}>
         <SVGShape
           url="/svg/hexagon.svg"

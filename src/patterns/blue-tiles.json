@@ -6,7 +6,7 @@
       "radius": 50,
       "numPoints": 8,
       "strokeWidth": 20,
-      "depth": 50
+      "strokeColor": "SUNLIGHT"
     },
     {
       "url": "/svg/drop-01.svg",
@@ -15,9 +15,7 @@
       "radius": 50,
       "numPoints": 8,
       "scale": 0.9,
-      "zPosition": 50,
-      "depth": 50,
-      "phong": true
+      "zPosition": 10
     },
     {
       "url": "/svg/drop-narrow.svg",
@@ -25,17 +23,18 @@
       "opacity": 0.6,
       "radius": 50,
       "numPoints": 8,
-      "zPosition": 100,
+      "zPosition": 80,
       "scale": 0.8,
       "depth": 50,
-      "strokeWidth": 10
+      "strokeWidth": 20,
+      "strokeColor": "SUNLIGHT"
     },
     {
       "url": "/svg/claw.svg",
       "fillColor": "MOONLIGHT",
       "radius": 50,
       "numPoints": 4,
-      "zPosition": 200,
+      "zPosition": 100,
       "depth": 200,
       "scale": 0.4
     }

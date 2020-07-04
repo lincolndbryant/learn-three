@@ -34,7 +34,7 @@ export default ({ patternIndex, setPatternIndex, intensity, setIntensity }) => {
         <Label>Point light intensity</Label>
         <Control>
           <Input
-            type="number"
+            type="slider"
             value={intensity}
             onChange={(e) => setIntensity(e.target.value)}
           />

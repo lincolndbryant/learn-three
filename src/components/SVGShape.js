@@ -70,7 +70,7 @@ const SVGShape = ({
   };
 
   const MaterialComponent = (props) => {
-    if (props.phong || true) {
+    if (props.phong) {
       return (
         <meshPhongMaterial {...props} shininess={100} specular={MOONLIGHT} />
       );

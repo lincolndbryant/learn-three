@@ -8,6 +8,8 @@ let startAt;
 let elapsedMs = 0;
 let pausedMs = 0;
 
+const radius = 500;
+
 const CameraControls = ({ animating }) => {
   if (!startAt) {
     startAt = Date.now();
@@ -28,7 +30,9 @@ const CameraControls = ({ animating }) => {
       pausedMs += delta;
     }
     controls.current.update();
-    camera.rotation.z = elapsedMs % 360;
+    // camera.rotation.z = elapsedMs % 360;
+    camera.position.set(Math.sin(elapsedMs) * radius, Math.cos(elapsedMs) * radius, camera.position.z);
+    // camera.lookAt(0, 0, 0);
   });
   return <orbitControls ref={controls} args={[camera, domElement]} />;
 };
