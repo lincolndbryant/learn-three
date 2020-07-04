@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Star from "../Star";
+import Star from "../FiberStar";
 import { clearScene } from "../../scene";
 import { createLayerControls } from "../../scene/gui";
 

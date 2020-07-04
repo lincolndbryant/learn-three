@@ -4,7 +4,9 @@
       "url": "/svg/drop-01.svg",
       "fillColor": "SLATE",
       "radius": 50,
-      "numPoints": 8
+      "numPoints": 8,
+      "strokeWidth": 20,
+      "depth": 50
     },
     {
       "url": "/svg/drop-01.svg",
@@ -12,9 +14,10 @@
       "textureUrl": "/img/mosaic.jpg",
       "radius": 50,
       "numPoints": 8,
-      "scale": 0.95,
+      "scale": 0.9,
       "zPosition": 50,
-      "depth": 50
+      "depth": 50,
+      "phong": true
     },
     {
       "url": "/svg/drop-narrow.svg",
@@ -25,7 +28,7 @@
       "zPosition": 100,
       "scale": 0.8,
       "depth": 50,
-      "strokeWidth": 20
+      "strokeWidth": 10
     },
     {
       "url": "/svg/claw.svg",

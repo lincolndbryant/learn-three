@@ -37,7 +37,7 @@ const SVGShape = ({
   }
 
   const materialProps = {
-    opacity: rest.opacity || 0.9,
+    opacity: rest.opacity || 1,
     color: fillColor || shape.color,
   };
   const meshProps = {
@@ -69,10 +69,19 @@ const SVGShape = ({
     );
   };
 
+  const MaterialComponent = (props) => {
+    if (props.phong || true) {
+      return (
+        <meshPhongMaterial {...props} shininess={100} specular={MOONLIGHT} />
+      );
+    }
+    return <meshStandardMaterial {...props} />;
+  };
+
   return (
     <>
-      <mesh {...meshProps}>
-        <meshStandardMaterial
+      <mesh {...meshProps} receiveShadow castShadow>
+        <MaterialComponent
           attach="material"
           map={texture}
           transparent

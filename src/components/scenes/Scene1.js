@@ -1,5 +1,5 @@
 import React from "react";
-import Star from "../Star";
+import Star from "../FiberStar";
 import { NEW_ENGLAND, PEA, TEAL } from "../../constants/colors";
 
 export default () => {
