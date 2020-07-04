@@ -49,6 +49,10 @@ const SVGShape = ({
     ...EXTRUDE_DEFAULTS,
     depth: rest.depth || 10,
   };
+  const strokeSettings = {
+    strokeWidth: strokeWidth,
+    strokeColor: rest.strokeColor || MOONLIGHT,
+  };
 
   const renderStroke = () => {
     return (
@@ -57,9 +61,9 @@ const SVGShape = ({
         <meshLineMaterial
           attach="material"
           depthTest={true}
-          lineWidth={10}
-          color={MOONLIGHT}
-          sizeAttenuation={1}
+          lineWidth={strokeWidth}
+          color={strokeSettings.strokeColor}
+          sizeAttenuation={true}
         />
       </mesh>
     );

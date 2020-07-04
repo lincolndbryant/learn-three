@@ -4,6 +4,7 @@ import PATTERNS from "./patterns";
 import FiberCanvas from "./components/FiberCanvas";
 import "./App.css";
 import Pattern from "./components/PatternManager";
+import SceneControls from "./components/SceneControls";
 
 function App() {
   const [animating, setAnimating] = useState(false);
@@ -37,18 +38,10 @@ function App() {
   const pattern = PATTERNS[patternIndex] || PATTERNS[0];
   return (
     <div className="App">
-      <div className="controls">
-        <select
-          value={patternIndex}
-          onChange={(e) => setPatternIndex(e.target.value)}
-        >
-          {PATTERNS.map((pattern, i) => (
-            <option key={i} value={i}>
-              {pattern.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <SceneControls
+        patternIndex={patternIndex}
+        setPatternIndex={setPatternIndex}
+      />
       <Canvas
         camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000 }}
         onCreated={(scene) => {

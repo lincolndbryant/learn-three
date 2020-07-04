@@ -24,7 +24,8 @@
       "numPoints": 8,
       "zPosition": 100,
       "scale": 0.8,
-      "depth": 50
+      "depth": 50,
+      "strokeWidth": 20
     },
     {
       "url": "/svg/claw.svg",

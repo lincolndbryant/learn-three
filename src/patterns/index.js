@@ -1,12 +1,4 @@
 import { createLayers } from "../lib/layer";
-import blueTiles from "./01.json";
-import pattern2 from "./02.json";
-import feathers from "./03.json";
-
-const createPattern = (data) => ({
-  ...data,
-  layers: createLayers(data.layers),
-});
 
 const importAll = (require) =>
   require.keys().reduce((acc, next) => {

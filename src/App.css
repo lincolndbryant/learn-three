@@ -17,9 +17,10 @@ body {
 
 .controls {
   position: fixed;
-  z-index: 100;
+  width: 400px;
+  z-index: 1;
   left: 0;
   top: 0;
-  padding: 5rem;
+  padding: 2rem;
   background: grey;
 }
