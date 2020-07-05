@@ -18,10 +18,10 @@ const FiberCanvas = ({ animating, intensity, children }) => {
           zPosition={-20}
         />
       </Suspense>
-        <mesh>
-          <coneGeometry args={[50, 200, 320]} />
-          <meshBasicMaterial color={0xffff00} />
-        </mesh>
+      <mesh>
+        <coneGeometry args={[50, 200, 320]} />
+        <meshBasicMaterial color={0xffff00} />
+      </mesh>
       {children}
     </>
   );

@@ -31,7 +31,11 @@ const CameraControls = ({ animating }) => {
     }
     controls.current.update();
     // camera.rotation.z = elapsedMs % 360;
-    camera.position.set(Math.sin(elapsedMs) * radius, Math.cos(elapsedMs) * radius, camera.position.z);
+    camera.position.set(
+      Math.sin(elapsedMs) * radius,
+      Math.cos(elapsedMs) * radius,
+      camera.position.z
+    );
     // camera.lookAt(0, 0, 0);
   });
   return <orbitControls ref={controls} args={[camera, domElement]} />;

@@ -10,7 +10,7 @@ import "./App.css";
 function App() {
   const [animating, setAnimating] = useState(false);
   const [intensity, setIntensity] = useState(1);
-  const [patternIndex, setPatternIndex] = useQueryString('i', 0);
+  const [patternIndex, setPatternIndex] = useQueryString("i", 0);
   const [pattern, setPattern] = useState(PATTERNS[patternIndex]);
 
   useEffect(() => {
@@ -27,11 +27,11 @@ function App() {
           i = PATTERNS.length - 1;
         }
         setPatternIndex(i);
-        setPattern(PATTERNS[i])
+        setPattern(PATTERNS[i]);
       } else if (e.key === "ArrowRight") {
         const i = (patternIndex + 1) % PATTERNS.length;
         setPatternIndex(i);
-        setPattern(PATTERNS[i])
+        setPattern(PATTERNS[i]);
       } else {
         return;
       }
@@ -45,7 +45,7 @@ function App() {
   });
 
   const updatePatternLayer = (i, key, val) => {
-    setPattern(pattern => ({
+    setPattern((pattern) => ({
       ...pattern,
       layers: pattern.layers.setIn([i, key], val),
     }));
@@ -55,7 +55,6 @@ function App() {
     const newPattern = PATTERNS[patternIndex];
     setPattern(newPattern);
   }, [patternIndex]);
-
 
   return (
     <main className="App">
@@ -68,7 +67,13 @@ function App() {
         updatePattern={updatePatternLayer}
       />
       <Canvas
-        camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000, up: [0, 0, 100] }}
+        camera={{
+          fov: 90,
+          position: [0, 0, 500],
+          near: 1,
+          far: 10000,
+          up: [0, 0, 100],
+        }}
         onCreated={(scene) => {
           window.__scene = scene;
           scene.camera.lookAt(0, 0, 0);
