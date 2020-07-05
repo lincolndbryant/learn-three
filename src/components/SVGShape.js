@@ -3,7 +3,7 @@ import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { extend, useLoader } from "react-three-fiber";
 import { MOONLIGHT, TEAL } from "../constants/colors";
 import * as THREE from "three";
-import { pick, processSVG } from "../lib/utils";
+import { processSVG } from "../lib/utils";
 import * as meshline from "threejs-meshline";
 
 extend(meshline);

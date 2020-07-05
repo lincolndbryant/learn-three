@@ -1,17 +1,55 @@
 import PATTERNS from "../patterns";
 import React from "react";
-import { Button, Control, Dropdown, Field, Input, Label } from "rbx";
+import { Button, Control, Dropdown, Field, Input, Label, Panel} from "rbx";
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import ColorButton from "./ColorButton";
 
-export default ({ patternIndex, setPatternIndex, intensity, setIntensity }) => {
-  const pattern = PATTERNS[patternIndex];
+const LAYER_CONTROLS = [
+  {name: 'opacity', type: 'number', min: 0.1, max: 1, step: 0.05},
+  {name: 'strokeWidth', type: 'number', min: 0, max: 30},
+]
+
+const LayerControls = ({layer, updatePattern}) => {
   return (
-    <div className="controls">
+    <Panel>
+      <Panel.Heading size="small">Layer {layer.id}</Panel.Heading>
+        {LAYER_CONTROLS.map((prop, i) =>
+          <Panel.Block key={i}>
+            <Label size="small">{ prop.name }</Label>
+              <Slider
+                {...prop}
+                type="range"
+                size="small"
+                value={layer[prop.name] || 1}
+                onChange={value => {
+                  updatePattern(layer.id, prop.name, value)
+                }}
+              />
+          </Panel.Block>
+        )}
+      <Panel.Block>
+        <Label>fillColor</Label>
+        <ColorButton value={layer.fillColor} onChange={color => {
+          updatePattern(layer.id, 'fillColor', color.hex)
+        }} />
+      </Panel.Block>
+    </Panel>
+  )
+}
+
+export default ({ pattern, patternIndex, setPatternIndex, intensity, setIntensity, updatePattern }) => {
+  const renderLayer = (layer, i) => <LayerControls key={i} layer={layer} updatePattern={updatePattern} />
+
+
+  return (
+    <Panel className="controls is-primary">
       <Field>
         <Label>Pattern</Label>
         <Control>
-          <Dropdown onChange={(e) => setPatternIndex(e.target.value)}>
+          <Dropdown onChange={(e) => setPatternIndex(e.target.value)} width={"100%"}>
             <Dropdown.Trigger>
-              <Button>{pattern.name}</Button>
+              <Button width={"100%"} textAlign={"left"}>{pattern.name}</Button>
             </Dropdown.Trigger>
             <Dropdown.Menu>
               <Dropdown.Content>
@@ -33,13 +71,16 @@ export default ({ patternIndex, setPatternIndex, intensity, setIntensity }) => {
       <Field>
         <Label>Point light intensity</Label>
         <Control>
-          <Input
-            type="slider"
+          <Slider
+            min={0.1}
+            max={5}
+            step={0.05}
             value={intensity}
-            onChange={(e) => setIntensity(e.target.value)}
+            onChange={val => setIntensity(val)}
           />
         </Control>
       </Field>
-    </div>
+      {pattern && pattern.layers.toList().toJS().map(renderLayer)}
+    </Panel>
   );
 };

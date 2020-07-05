@@ -9,20 +9,29 @@
     },
     {
       "url": "/svg/droplet.svg",
+      "fillColor": "SLATE",
+      "radius": 80,
+      "numPoints": 9,
+      "scale": 0.8,
+      "zPosition": 100
+    },
+    {
+      "url": "/svg/droplet.svg",
+      "textureUrl": "/img/concrete.jpg",
       "fillColor": "NEW_ENGLAND",
       "radius": 50,
       "numPoints": 9,
-      "scale": 0.6,
-      "zPosition": 100
+      "scale": 0.7,
+      "zPosition": 110
     },
     {
       "url": "/svg/poker-sharp.svg",
       "fillColor": "PEA",
       "radius": 50,
-      "numPoints": 12,
-      "scale": 0.5,
+      "numPoints": 9,
+      "scale": 0.3,
       "zPosition": 120,
-      "opacity": 0.4
+      "opacity": 0.8
     }
   ]
 }

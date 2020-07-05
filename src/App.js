@@ -4,13 +4,14 @@ import PATTERNS from "./patterns";
 import FiberCanvas from "./components/FiberCanvas";
 import Pattern from "./components/PatternManager";
 import SceneControls from "./components/SceneControls";
-import "./App.css";
 import useQueryString from "./hooks/useQueryString";
+import "./App.css";
 
 function App() {
   const [animating, setAnimating] = useState(false);
   const [intensity, setIntensity] = useState(1);
   const [patternIndex, setPatternIndex] = useQueryString('i', 0);
+  const [pattern, setPattern] = useState(PATTERNS[patternIndex]);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -26,8 +27,11 @@ function App() {
           i = PATTERNS.length - 1;
         }
         setPatternIndex(i);
+        setPattern(PATTERNS[i])
       } else if (e.key === "ArrowRight") {
-        setPatternIndex((patternIndex + 1) % PATTERNS.length);
+        const i = (patternIndex + 1) % PATTERNS.length;
+        setPatternIndex(i);
+        setPattern(PATTERNS[i])
       } else {
         return;
       }
@@ -40,15 +44,28 @@ function App() {
     };
   });
 
-  const pattern = PATTERNS[patternIndex];
+  const updatePatternLayer = (i, key, val) => {
+    setPattern(pattern => ({
+      ...pattern,
+      layers: pattern.layers.setIn([i, key], val),
+    }));
+  };
+
+  useEffect(() => {
+    const newPattern = PATTERNS[patternIndex];
+    setPattern(newPattern);
+  }, [patternIndex]);
+
 
   return (
     <main className="App">
       <SceneControls
+        pattern={pattern}
         patternIndex={patternIndex}
         setPatternIndex={setPatternIndex}
         intensity={intensity}
         setIntensity={setIntensity}
+        updatePattern={updatePatternLayer}
       />
       <Canvas
         camera={{ fov: 90, position: [0, 0, 500], near: 1, far: 10000, up: [0, 0, 100] }}
