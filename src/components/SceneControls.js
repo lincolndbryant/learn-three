@@ -1,14 +1,19 @@
 import PATTERNS from "../patterns";
 import React from "react";
 import { Button, Control, Dropdown, Field, Label } from "rbx";
-import Slider from "rc-slider";
+import Slider, { createSliderWithTooltip } from "rc-slider";
 import Select from "react-select";
 import "rc-slider/assets/index.css";
 import ColorButton from "./ColorButton";
 
+const SliderWithTooltip = createSliderWithTooltip(Slider);
+
 const LAYER_CONTROLS = [
-  { name: "opacity", type: "number", min: 0.1, max: 1, step: 0.05 },
+  { name: "numPoints", type: "number", min: 1, max: 16, step: 1 },
+  { name: "scale", type: "number", min: 0.1, max: 5, step: 0.05 },
+  { name: "radius", type: "number", min: 0, max: 1000, step: 20 },
   { name: "strokeWidth", type: "number", min: 0, max: 30 },
+  { name: "opacity", type: "number", min: 0.1, max: 1, step: 0.05 },
 ];
 
 const TEXTURE_URLS = [
@@ -16,6 +21,7 @@ const TEXTURE_URLS = [
   "/img/concrete.jpg",
   "/img/dark-stone.jpg",
 ];
+
 const TEXTURE_OPTIONS = [{ label: "None", value: null }].concat(
   TEXTURE_URLS.map((url) => ({ label: url, value: url }))
 );
@@ -28,7 +34,7 @@ const LayerControls = ({ layer, updatePattern }) => {
           <Label className="has-text-light">{prop.name}</Label>
         </Field.Label>
         <Field.Body>
-          <Slider
+          <SliderWithTooltip
             {...prop}
             type="range"
             size="small"

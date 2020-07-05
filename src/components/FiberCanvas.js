@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import SVGShape from "./SVGShape";
 import CameraControls from "./CameraControls";
 import { MOONLIGHT } from "../constants/colors";
+import hexagon from "../svg/hexagon.svg";
 
 const FiberCanvas = ({ animating, intensity, children }) => {
   return (
@@ -12,7 +13,7 @@ const FiberCanvas = ({ animating, intensity, children }) => {
       <pointLight position={[0, 0, 500]} intensity={intensity} />
       <Suspense fallback={null}>
         <SVGShape
-          url="/svg/hexagon.svg"
+          url={hexagon}
           textureUrl="/img/dark-stone.jpg"
           scale={200}
           zPosition={-20}
