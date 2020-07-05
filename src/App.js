@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Canvas } from "react-three-fiber";
 import PATTERNS from "./patterns";
 import FiberCanvas from "./components/FiberCanvas";
-import Pattern from "./components/PatternManager";
+import Pattern from "./components/Pattern";
 import SceneControls from "./components/SceneControls";
 import useQueryString from "./hooks/useQueryString";
 import "./App.css";
