@@ -3,19 +3,13 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
+  background: black;
 }
 
-#container {
+.App {
   position: fixed;
   left: 0;
   top: 0;
-}
-
-.controls {
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  padding: 50px;
-  background: grey;
+  right: 0;
+  bottom: 0;
 }

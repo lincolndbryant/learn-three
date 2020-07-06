@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Star from "../Star";
-import {clearScene} from "../../scene";
+import Star from "../FiberStar";
+import { clearScene } from "../../scene";
 import { createLayerControls } from "../../scene/gui";
 
 const SceneEditor = ({ pattern }) => {
@@ -12,7 +12,7 @@ const SceneEditor = ({ pattern }) => {
   };
 
   useEffect(() => {
-    console.log('pattern update', pattern);
+    console.log("pattern update", pattern);
     const { layers } = pattern;
     clearScene();
     createLayerControls(layers.toList().toJS(), updateLayer);

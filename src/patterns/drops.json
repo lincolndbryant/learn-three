@@ -4,13 +4,13 @@
       "url": "/svg/drop.svg",
       "fillColor": "MOONLIGHT",
       "radius": 50,
-      "numPoints": 8
+      "numPoints": 12
     },
     {
       "url": "/svg/drop-01.svg",
       "fillColor": "NEW_ENGLAND",
       "radius": 50,
-      "numPoints": 8,
+      "numPoints": 10,
       "scale": 0.95,
       "zPosition": 10
     },

@@ -1,0 +1,35 @@
+@import 'bulma/sass/utilities/initial-variables'
+@import "bulma/sass/utilities/functions"
+
+$body-background: black
+$body-background-color: black
+$panel-heading-background-color: $grey-light
+
+$scheme-main: $black
+$scheme-invert: $white
+$text: $white-ter
+$block-spacing: 1.0rem
+
+body
+  color: $white-ter
+
+.App
+  background: black
+
+.scene-controls
+  width: 400px
+  position: absolute
+  z-index: 1
+  left: 0
+  top: 0
+  bottom: 0
+  overflow-y: auto
+  background: $grey-darker
+  color: $white-ter
+  $text: $white-ter
+
+  .layer-controls, .global-controls
+    .field-label
+      min-width: 30%
+
+@import 'bulma/bulma.sass'

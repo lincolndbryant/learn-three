@@ -1,6 +1,6 @@
 import { Map, OrderedMap } from "immutable";
 import * as COLORS from "../constants/colors";
-import DEFAULT_PATTERN from "../patterns/01.json";
+import svgFiles from "../svg";
 
 export const createLayers = (layers) => {
   return OrderedMap(
@@ -11,9 +11,15 @@ export const createLayers = (layers) => {
       if (COLORS[layer.fillColor]) {
         layer.fillColor = COLORS[layer.fillColor];
       }
+      if (COLORS[layer.strokeColor]) {
+        layer.strokeColor = COLORS[layer.strokeColor];
+      }
+      const fileName = layer.url.split("/").pop();
+      console.log(fileName);
+      if (svgFiles[fileName]) {
+        layer.url = svgFiles[fileName];
+      }
       return [i + 1, Map(layer)];
     })
   );
 };
-
-export const DEFAULT_LAYERS = createLayers(DEFAULT_PATTERN.layers);
