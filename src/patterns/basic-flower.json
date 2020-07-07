@@ -1,0 +1,19 @@
+{
+  "layers": [
+    {
+      "url": "/svg/drop-01.svg",
+      "fillColor": "MOONLIGHT",
+      "radius": 0,
+      "numPoints": 4
+    },
+    {
+      "url": "/svg/droplet.svg",
+      "fillColor": "PEA",
+      "radius": 0,
+      "numPoints": 8,
+      "scale": 0.5,
+      "strokeWidth": 20
+    }
+  ]
+}
+

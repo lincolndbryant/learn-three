@@ -3,7 +3,7 @@
 
 $body-background: black
 $body-background-color: black
-$panel-heading-background-color: $grey-light
+$message-background-color: $black-bis
 
 $scheme-main: $black
 $scheme-invert: $white
@@ -22,11 +22,12 @@ body
   z-index: 1
   left: 0
   top: 0
-  bottom: 0
-  overflow-y: auto
-  background: $grey-darker
-  color: $white-ter
-  $text: $white-ter
+  section
+    background: $grey-darker
+
+  &.visible
+    bottom: 0
+    overflow-y: auto
 
   .layer-controls, .global-controls
     .field-label

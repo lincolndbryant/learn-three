@@ -26,6 +26,9 @@ const SVGShape = ({
   const svg = useLoader(SVGLoader, url);
   const shape = useMemo(() => processSVG(svg), [svg]);
 
+  if (rest.textureUrl && !rest.textureUrl.includes('/')) {
+    rest.textureUrl = process.env.PUBLIC_URL + '/img/' + rest.textureUrl;
+  }
   const [texture] = useLoader(
     THREE.TextureLoader,
     rest.textureUrl ? [rest.textureUrl] : []
@@ -72,11 +75,25 @@ const SVGShape = ({
   const MaterialComponent = (props) => {
     if (props.phong) {
       return (
-        <meshPhongMaterial {...props} shininess={100} specular={MOONLIGHT} />
+        <meshPhongMaterial attach="material" {...props} shininess={100} specular={MOONLIGHT} />
       );
     }
-    return <meshStandardMaterial {...props} />;
+    return <meshStandardMaterial attach="material" {...props} />;
   };
+
+  const renderGeometry = () => {
+    if (true) {
+      return (
+        <extrudeGeometry
+          attach="geometry"
+          args={[shape.shape, extrudeSettings]}
+        />
+      );
+    }
+    return (
+      <shapeBufferGeometry attach="geometry" args={[shape.shape]} />
+    )
+  }
 
   return (
     <>
@@ -87,10 +104,7 @@ const SVGShape = ({
           transparent
           {...materialProps}
         />
-        <extrudeGeometry
-          attach="geometry"
-          args={[shape.shape, extrudeSettings]}
-        />
+        {renderGeometry()}
       </mesh>
       {strokeWidth && renderStroke()}
     </>

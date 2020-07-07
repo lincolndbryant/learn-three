@@ -15,11 +15,13 @@ export const createLayers = (layers) => {
         layer.strokeColor = COLORS[layer.strokeColor];
       }
       const fileName = layer.url.split("/").pop();
-      console.log(fileName);
       if (svgFiles[fileName]) {
         layer.url = svgFiles[fileName];
       }
-      return [i + 1, Map(layer)];
+      if (layer.textureUrl) {
+        layer.textureUrl = process.env.PUBLIC_URL + layer.textureUrl;
+      }
+      return [layer.id, Map(layer)];
     })
   );
 };
