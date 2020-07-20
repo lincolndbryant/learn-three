@@ -1,0 +1,41 @@
+{
+  "layers": [
+    {
+      "url": "/svg/drop-01.svg",
+      "textureUrl": "/img/marble-white.jpg",
+      "radius": 100,
+      "numPoints": 6
+    },
+    {
+      "url": "/svg/drop.svg",
+      "textureUrl": "/img/wood-hexagons.jpg",
+      "radius": 50,
+      "numPoints": 6,
+      "scale": 0.8,
+      "strokeWidth": 10,
+      "strokeColor": "SLATE"
+    },
+    {
+      "url": "/svg/bulb.svg",
+      "textureUrl": "/img/birch.jpg",
+      "radius": 50,
+      "numPoints": 9,
+      "scale": 0.7
+    },
+    {
+      "url": "/svg/drop-narrow.svg",
+      "fillColor": "LAVENDER",
+      "radius": 50,
+      "numPoints": 6,
+      "scale": 0.3,
+      "phong": true,
+      "opacity": 0.5,
+      "highlight": {
+        "fillColor": "MOONLIGHT",
+        "strokeColor": "TEAL",
+        "strokeWidth": 20,
+        "textureUrl": null
+      }
+    }
+  ]
+}

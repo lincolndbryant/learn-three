@@ -1,6 +1,6 @@
 import PATTERNS from "../patterns";
-import React, {useState} from "react";
-import cx from 'classnames';
+import React, { useState } from "react";
+import cx from "classnames";
 import { Button, Message, Field, Label } from "rbx";
 import Slider, { createSliderWithTooltip } from "rc-slider";
 import Select from "react-select";
@@ -26,15 +26,21 @@ const TEXTURE_URLS = [
 ];
 
 const TEXTURE_OPTIONS = [{ label: "None", value: null }].concat(
-  TEXTURE_URLS.map(url => ({ label: url, value: process.env.PUBLIC_URL + url }))
+  TEXTURE_URLS.map((url) => ({
+    label: url,
+    value: process.env.PUBLIC_URL + url,
+  }))
 );
 
-const SVG_OPTIONS = Object.keys(svgFiles).map(fileName => {
+const SVG_OPTIONS = Object.keys(svgFiles).map((fileName) => {
   const url = svgFiles[fileName];
-  return { label: fileName, value: url }
-})
+  return { label: fileName, value: url };
+});
 
-const PATTERN_OPTIONS = PATTERNS.map((pattern, i) => ({ label: pattern.name, value: i}))
+const PATTERN_OPTIONS = PATTERNS.map((pattern, i) => ({
+  label: pattern.name,
+  value: i,
+}));
 
 const customStyles = {
   container: (provided) => ({
@@ -47,15 +53,13 @@ const customStyles = {
   }),
 };
 
-const FieldWrapper = ({labelText, children}) => {
+const FieldWrapper = ({ labelText, children }) => {
   return (
     <Field horizontal expanded>
       <Field.Label size="small" className="is-normal">
         <Label className="has-text-light">{labelText}</Label>
       </Field.Label>
-      <Field.Body>
-        {children}
-      </Field.Body>
+      <Field.Body>{children}</Field.Body>
     </Field>
   );
 };
@@ -133,9 +137,11 @@ const LayerControls = ({ layer, updatePattern, onHide }) => {
     <Message className="layer-controls is-small">
       <div className="message-header">
         <p>Layer {layer.id}</p>
-        <Button size="small" onClick={() => setHidden(!hidden)}>{hidden ? "Show" : "Hide"}</Button>
+        <Button size="small" onClick={() => setHidden(!hidden)}>
+          {hidden ? "Show" : "Hide"}
+        </Button>
       </div>
-      {!hidden &&
+      {!hidden && (
         <div className="message-body">
           {LAYER_CONTROLS.map((prop, i) => renderNumberField(prop, i))}
 
@@ -151,7 +157,7 @@ const LayerControls = ({ layer, updatePattern, onHide }) => {
           {renderSvgUrlField("url")}
           {renderTextureUrlField("textureUrl")}
         </div>
-      }
+      )}
     </Message>
   );
 };
@@ -168,9 +174,10 @@ export default ({
 }) => {
   const renderLayer = (layer, i) => {
     return (
-      <LayerControls key={layer.id}
-                     layer={layer}
-                     updatePattern={updatePattern}
+      <LayerControls
+        key={layer.id}
+        layer={layer}
+        updatePattern={updatePattern}
       />
     );
   };
@@ -186,7 +193,7 @@ export default ({
               <Select
                 options={PATTERN_OPTIONS}
                 value={patternValue}
-                onChange={opt => setPatternIndex(opt.value)}
+                onChange={(opt) => setPatternIndex(opt.value)}
                 styles={customStyles}
               />
             </FieldWrapper>
@@ -204,10 +211,14 @@ export default ({
         {pattern && pattern.layers.toList().toJS().map(renderLayer)}
       </section>
     );
-  }
+  };
 
   return (
-    <div className={cx('scene-controls is-dark has-text-light', {visible: controlsVisible })}>
+    <div
+      className={cx("scene-controls is-dark has-text-light", {
+        visible: controlsVisible,
+      })}
+    >
       <Button size="small" onClick={() => setControlsVisible(!controlsVisible)}>
         {controlsVisible ? "Hide" : "Show"}
       </Button>

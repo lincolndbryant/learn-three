@@ -26,6 +26,6 @@ export const processSVG = (svgData) => {
       };
     });
   });
-  console.log(processed[0]);
+  // console.log(processed[0]);
   return processed[0];
 };

@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import SVGShape from "./SVGShape";
+import { SUNLIGHT } from "../constants/colors";
 
 const FiberStar = ({
   numPoints,
   radius,
-  zPosition,
+  zPosition = 0,
   PointComponent,
+  ticks,
   ...rest
 }) => {
   const stepSize = 360 / numPoints;
@@ -18,13 +20,28 @@ const FiberStar = ({
       rest.scale = [rest.scale, rest.scale, rest.scale];
     }
 
+    let highlightProps = {};
+    if (typeof ticks === "number") {
+      if (ticks % numPoints === i && rest.highlight) {
+        highlightProps = rest.highlight;
+        highlightProps.zPosition = zPosition + 10;
+      } else {
+        highlightProps = {};
+      }
+    }
+
     return (
       <Suspense fallback={null} key={i}>
         <PointComponent
           key={i}
           rotation={-rad}
-          position={[Math.sin(rad) * radius, Math.cos(rad) * radius, zPosition]}
+          position={[
+            Math.sin(rad) * radius,
+            Math.cos(rad) * radius,
+            (highlightProps.zPosition || zPosition) + i,
+          ]}
           {...rest}
+          {...highlightProps}
         />
       </Suspense>
     );

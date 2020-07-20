@@ -16,18 +16,12 @@ const EXTRUDE_DEFAULTS = {
   extrudeMaterial: 1, //material index of the side faces
 };
 
-const SVGShape = ({
-  url,
-  rotation,
-  fillColor = TEAL,
-  strokeWidth,
-  ...rest
-}) => {
+const SVGShape = ({ url, rotation, fillColor, strokeWidth, ...rest }) => {
   const svg = useLoader(SVGLoader, url);
   const shape = useMemo(() => processSVG(svg), [svg]);
 
-  if (rest.textureUrl && !rest.textureUrl.includes('/')) {
-    rest.textureUrl = process.env.PUBLIC_URL + '/img/' + rest.textureUrl;
+  if (rest.textureUrl && !rest.textureUrl.includes("/")) {
+    rest.textureUrl = process.env.PUBLIC_URL + "/img/" + rest.textureUrl;
   }
   const [texture] = useLoader(
     THREE.TextureLoader,
@@ -41,8 +35,10 @@ const SVGShape = ({
 
   const materialProps = {
     opacity: rest.opacity || 1,
-    color: fillColor || shape.color,
   };
+  if (fillColor) {
+    materialProps.color = fillColor;
+  }
   const meshProps = {
     position: rest.position,
     rotation: [0, 0, rotation || 0],
@@ -75,14 +71,19 @@ const SVGShape = ({
   const MaterialComponent = (props) => {
     if (props.phong) {
       return (
-        <meshPhongMaterial attach="material" {...props} shininess={100} specular={MOONLIGHT} />
+        <meshPhongMaterial
+          attach="material"
+          shininess={100}
+          specular={MOONLIGHT}
+          {...props}
+        />
       );
     }
     return <meshStandardMaterial attach="material" {...props} />;
   };
 
   const renderGeometry = () => {
-    if (true) {
+    if (rest.extrude) {
       return (
         <extrudeGeometry
           attach="geometry"
@@ -90,10 +91,8 @@ const SVGShape = ({
         />
       );
     }
-    return (
-      <shapeBufferGeometry attach="geometry" args={[shape.shape]} />
-    )
-  }
+    return <shapeBufferGeometry attach="geometry" args={[shape.shape]} />;
+  };
 
   return (
     <>
