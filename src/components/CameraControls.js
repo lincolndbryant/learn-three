@@ -6,7 +6,6 @@ extend({ OrbitControls });
 
 let startAt;
 let elapsedMs = 0;
-let pausedMs = 0;
 const speed = 0.2;
 const radius = 500;
 
@@ -26,8 +25,6 @@ const CameraControls = ({ animating }) => {
   useFrame(({ camera }, delta) => {
     if (animating) {
       elapsedMs += delta * speed;
-    } else {
-      pausedMs += delta * speed;
     }
     controls.current.update();
     // camera.rotation.z = elapsedMs % 360;

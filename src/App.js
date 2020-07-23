@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "react-three-fiber";
-import { Loop, Transport } from "tone";
+import Tone, { Transport } from "tone";
 import PATTERNS from "./patterns";
 import FiberCanvas from "./components/FiberCanvas";
 import Pattern from "./components/Pattern";
@@ -9,9 +9,9 @@ import useQueryString from "./hooks/useQueryString";
 import "./App.css";
 import SVGShape from "./components/SVGShape";
 import svgFiles from "./svg";
-import { SLATE, TEAL } from "./constants/colors";
-import CenterCone from "./components/CenterCone";
+import { SLATE } from "./constants/colors";
 import Timer from "./components/Timer";
+import CenterCone from "./components/CenterCone";
 
 function App() {
   const [animating, setAnimating] = useState(false);
@@ -32,7 +32,7 @@ function App() {
         if (animating) {
           Transport.pause();
         } else {
-          Transport.start();
+          Tone.start();
           console.log("start animating");
         }
         setAnimating(!animating);
@@ -82,7 +82,7 @@ function App() {
         setIntensity={setIntensity}
         updatePattern={updatePatternLayer}
       />
-      <Timer setTicks={setTicks} />
+      <Timer setTicks={setTicks} animating={animating} />
       <Canvas
         camera={{
           fov: 90,

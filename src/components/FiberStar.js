@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { MathUtils } from "three";
 import { range } from "../lib/utils";
 import SVGShape from "./SVGShape";
-import { SUNLIGHT } from "../constants/colors";
 
 const FiberStar = ({
   numPoints,

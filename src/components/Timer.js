@@ -1,19 +1,24 @@
 import { Loop, Transport } from "tone";
 import { useEffect, useRef } from "react";
 
-Transport.bpm.value = 90;
-window._transport = Transport;
+let toneStarted = false;
 
-export default function Timer({ setTicks }) {
+export default function Timer({ setTicks, animating }) {
   const ticks = useRef(0);
+
   useEffect(() => {
-    console.log("init loop");
-    new Loop((ts) => {
-      ticks.current++;
-      ticks.current = ticks.current % 16;
-      setTicks(ticks.current);
-    }, "4n").start(0);
-  }, [setTicks]);
+    if (!toneStarted && animating) {
+      Transport.bpm.value = 90;
+
+      new Loop(() => {
+        ticks.current++;
+        ticks.current = ticks.current % 16;
+        setTicks(ticks.current);
+      }, "4n");
+
+      toneStarted = true;
+    }
+  }, [animating]);
 
   return null;
 }

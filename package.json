@@ -21,7 +21,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
-    "react-spring": "^9.0.0-rc.3",
+    "react-spring": "^8.0.27",
     "react-three-fiber": "^4.2.12",
     "three": "^0.116.1",
     "threejs-meshline": "^2.0.11",
@@ -30,6 +30,7 @@
   "scripts": {
     "start": "react-scripts start --no-cache",
     "build": "react-scripts build",
+    "build-localhost": "PUBLIC_URL=/ react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",

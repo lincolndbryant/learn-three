@@ -10,10 +10,6 @@ export function pick(o, ...props) {
   return Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })));
 }
 
-let _id = 0;
-
-const uniqueId = () => _id++;
-
 export const processSVG = (svgData) => {
   const processed = svgData.paths.flatMap((path, index) => {
     const shapes = path.toShapes(true);
